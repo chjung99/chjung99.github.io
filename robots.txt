@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://localhost:4000/sitemap.xml
+Sitemap: https://chjung99.github.io/sitemap.xml
