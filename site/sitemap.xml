@@ -16,6 +16,21 @@
         <loc>https://chjung99.github.io/linux/</loc>
       </url>
       <url>
+        <loc>https://chjung99.github.io/linux/container%20primitives/</loc>
+      </url>
+      <url>
+        <loc>https://chjung99.github.io/linux/container%20primitives/1.Namespace/</loc>
+      </url>
+      <url>
+        <loc>https://chjung99.github.io/linux/container%20primitives/2.Cgroups/</loc>
+      </url>
+      <url>
+        <loc>https://chjung99.github.io/linux/container%20primitives/3.OverlayFS/</loc>
+      </url>
+      <url>
+        <loc>https://chjung99.github.io/linux/container%20primitives/4.veth/</loc>
+      </url>
+      <url>
         <loc>https://chjung99.github.io/sandbox/</loc>
       </url>
 </urlset>
