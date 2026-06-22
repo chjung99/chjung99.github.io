@@ -1,0 +1,104 @@
+/* ============================================================================
+   Terminal Styling for Code Blocks (Block Code Only)
+   ============================================================================ */
+
+/* 1. Custom style for the highlight container (Block Code Blocks ONLY) */
+.md-typeset .highlight {
+    position: relative;
+    padding-top: 38px !important; /* Space for the macOS-style window controls */
+    border: 1px solid #1e293b;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    background-color: #0c0f12 !important; /* Force dark background for block code */
+    overflow: hidden;
+    margin: 1.5em 0;
+}
+
+/* Reset the inner pre and code elements inside block code to prevent double backgrounds */
+.md-typeset .highlight pre {
+    background-color: transparent !important;
+    margin: 0 !important;
+    padding: 12px 16px !important;
+    overflow: auto;
+}
+
+.md-typeset .highlight code {
+    background-color: transparent !important;
+    color: #e2e8f0 !important; /* Force light text inside block code */
+    font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace !important;
+    font-size: 0.85em;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* 2. macOS-style window controls (Red, Yellow, Green dots) - Target ONLY the block container */
+.md-typeset .highlight::before {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 16px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #ff5f56; /* Red */
+    box-shadow: 16px 0 0 #ffbd2e, 32px 0 0 #27c93f; /* Yellow, Green */
+    z-index: 5;
+}
+
+/* 3. Fix color token styling (prevent light-mode dark text overrides on dark background) */
+.md-typeset .highlight span {
+    color: #f8fafc; /* Default fallback for tokens under forced dark background */
+}
+
+/* Vibrant Pygments Syntax Customization (Only inside .highlight block code) */
+.md-typeset .highlight .gp {
+    color: #00ffd0 !important; /* Neon Cyan for prompts ($ or #) */
+    font-weight: bold;
+    user-select: none; /* Make prompt unselectable */
+    margin-right: 0.5em;
+}
+
+.md-typeset .highlight .nb,
+.md-typeset .highlight .k {
+    color: #38bdf8 !important; /* Electric Blue for commands/keywords */
+    font-weight: 600;
+}
+
+.md-typeset .highlight .s,
+.md-typeset .highlight .s1,
+.md-typeset .highlight .s2 {
+    color: #34d399 !important; /* Bright Emerald Green for strings */
+}
+
+.md-typeset .highlight .c,
+.md-typeset .highlight .c1 {
+    color: #64748b !important; /* Cool Slate Gray for comments */
+    font-style: italic;
+}
+
+.md-typeset .highlight .go {
+    color: #cbd5e1 !important; /* Dimmish gray for stdout/stderr output */
+    opacity: 0.9;
+}
+
+.md-typeset .highlight .m, 
+.md-typeset .highlight .o {
+    color: #a855f7 !important; /* Electric Purple for numbers/operators */
+}
+
+/* Custom scrollbar for terminal window */
+.md-typeset .highlight::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+.md-typeset .highlight::-webkit-scrollbar-track {
+    background: #0c0f12;
+}
+.md-typeset .highlight::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+.md-typeset .highlight::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
