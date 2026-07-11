@@ -1,0 +1,25 @@
+graph TD
+    subgraph Kubelet ["1. Kubelet 레이어"]
+        A["pod.yaml"] -->|1. 파일 감지| B["Kubelet"]
+        B -->|2. CRI 요청| C["dockershim"]
+    end
+    
+    subgraph Docker ["2. Docker 레이어"]
+        C -->|3. Docker API| D["dockerd"]
+    end
+    
+    subgraph Containerd ["3. Containerd 레이어"]
+        D -->|4. GRPC 호출| E["containerd"]
+        E -->|5. Shim 분기| F["containerd-shim"]
+    end
+    
+    subgraph LowLevel ["4. OCI / Kernel 레이어"]
+        F -->|6. runc 실행| G["runc"]
+        G -->|7. 컨테이너 생성| H["최종 컨테이너<br>(nginx / pause)"]
+        F -.->|8. 프로세스 감시| H
+        G -->|9. 즉시 종료| I["exit"]
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+    style I fill:#ddd,stroke:#333,stroke-width:1px
