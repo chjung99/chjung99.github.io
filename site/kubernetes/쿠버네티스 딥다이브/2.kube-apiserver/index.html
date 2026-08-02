@@ -12,34 +12,36 @@
         <meta name="author" content="Chanho Jung">
       
       
-        <link rel="canonical" href="https://chjung99.github.io/sandbox/">
+        <link rel="canonical" href="https://chjung99.github.io/kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/2.kube-apiserver/">
       
       
-        <link rel="prev" href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/">
+        <link rel="prev" href="../1.kubelet/">
       
+      
+        <link rel="next" href="../../../linux/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="zensical-0.0.43">
     
     
       
-        <title>🏖️ Sandbox - Chanho's Wiki</title>
+        <title>2. kube-apiserver - Chanho's Wiki</title>
       
     
     
       
         
       
-      <link rel="stylesheet" href="../assets/stylesheets/modern/main.fba56155.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/modern/main.fba56155.min.css">
       
         
           
         
-        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.dfe2e883.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/modern/palette.dfe2e883.min.css">
       
       
 
@@ -58,9 +60,9 @@
       
     
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    <script>__md_scope=new URL("../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -85,7 +87,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sandbox" class="md-skip">
+        <a href="#2-kube-apiserver" class="md-skip">
           Skip to content
         </a>
       
@@ -101,7 +103,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="./.." title="Chanho&#x27;s Wiki" class="md-header__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+    <a href="../../.." title="Chanho&#x27;s Wiki" class="md-header__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -121,7 +123,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              🏖️ Sandbox
+              2. kube-apiserver
             
           </span>
         </div>
@@ -200,7 +202,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="./.." title="Chanho&#x27;s Wiki" class="md-nav__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+    <a href="../../.." title="Chanho&#x27;s Wiki" class="md-nav__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -218,7 +220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="./.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -269,7 +271,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../aws/" class="md-nav__link ">
+            <a href="../../../aws/" class="md-nav__link ">
               
   
   
@@ -336,7 +338,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../golang/" class="md-nav__link ">
+            <a href="../../../golang/" class="md-nav__link ">
               
   
   
@@ -377,6 +379,8 @@
       
   
   
+    
+  
   
   
     
@@ -397,15 +401,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../kubernetes/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -428,7 +432,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -444,8 +448,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -461,11 +467,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
         
           
           <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
@@ -485,7 +491,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -502,7 +508,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/0.%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95/" class="md-nav__link">
+      <a href="../0.%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95/" class="md-nav__link">
         
   
   
@@ -529,7 +535,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/1.kubelet/" class="md-nav__link">
+      <a href="../1.kubelet/" class="md-nav__link">
         
   
   
@@ -553,10 +559,36 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/2.kube-apiserver/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2. kube-apiserver
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
         
   
   
@@ -571,6 +603,77 @@
   
 
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#k8s-hardway" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        k8s hardway?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kube-apiserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        kube-apiserver
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="kube-apiserver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kube-apiserver_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        kube-apiserver 동작 프로세스
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Kubernetes Component와의 주요 상호작용
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -627,7 +730,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../linux/" class="md-nav__link ">
+            <a href="../../../linux/" class="md-nav__link ">
               
   
   
@@ -697,7 +800,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../linux/container%20primitives/" class="md-nav__link ">
+            <a href="../../../linux/container%20primitives/" class="md-nav__link ">
               
   
   
@@ -739,7 +842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/container%20primitives/1.Namespace/" class="md-nav__link">
+      <a href="../../../linux/container%20primitives/1.Namespace/" class="md-nav__link">
         
   
   
@@ -766,7 +869,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/container%20primitives/2.Cgroups/" class="md-nav__link">
+      <a href="../../../linux/container%20primitives/2.Cgroups/" class="md-nav__link">
         
   
   
@@ -793,7 +896,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/container%20primitives/3.OverlayFS/" class="md-nav__link">
+      <a href="../../../linux/container%20primitives/3.OverlayFS/" class="md-nav__link">
         
   
   
@@ -820,7 +923,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/container%20primitives/4.veth/" class="md-nav__link">
+      <a href="../../../linux/container%20primitives/4.veth/" class="md-nav__link">
         
   
   
@@ -906,7 +1009,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/networking%20stack/L3.Netfilter%20And%20Iptables/" class="md-nav__link">
+      <a href="../../../linux/networking%20stack/L3.Netfilter%20And%20Iptables/" class="md-nav__link">
         
   
   
@@ -1004,7 +1107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/0.%20%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%20%EC%84%A4%EC%A0%95/" class="md-nav__link">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/0.%20%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%20%EC%84%A4%EC%A0%95/" class="md-nav__link">
         
   
   
@@ -1031,7 +1134,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/1.chroot/" class="md-nav__link">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/1.chroot/" class="md-nav__link">
         
   
   
@@ -1058,7 +1161,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/2.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C/" class="md-nav__link">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/2.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C/" class="md-nav__link">
         
   
   
@@ -1085,7 +1188,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/3.overlayFS/" class="md-nav__link">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/3.overlayFS/" class="md-nav__link">
         
   
   
@@ -1112,7 +1215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/4.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EA%B2%A9%EB%A6%AC/" class="md-nav__link">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/4.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EA%B2%A9%EB%A6%AC/" class="md-nav__link">
         
   
   
@@ -1139,7 +1242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/5.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EC%9E%90%EC%9B%90/" class="md-nav__link">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/5.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EC%9E%90%EC%9B%90/" class="md-nav__link">
         
   
   
@@ -1166,7 +1269,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="md-nav__link">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="md-nav__link">
         
   
   
@@ -1205,8 +1308,6 @@
       
   
   
-    
-  
   
   
     
@@ -1225,15 +1326,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="././" class="md-nav__link md-nav__link--active">
+            <a href="../../../sandbox/" class="md-nav__link ">
               
   
   
@@ -1251,7 +1352,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1287,6 +1388,11 @@
                       
                     
                     
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
                   
                   <div class="md-sidebar__inner">
                     
@@ -1298,6 +1404,64 @@
   
     
   
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#k8s-hardway" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        k8s hardway?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kube-apiserver" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        kube-apiserver
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="kube-apiserver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#kube-apiserver_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        kube-apiserver 동작 프로세스
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubernetes-component" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Kubernetes Component와의 주요 상호작용
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1322,7 +1486,7 @@
   
   
     <li class="md-path__item">
-      <a href="./.." class="md-path__link">
+      <a href="../../.." class="md-path__link">
         
   
   <span class="md-ellipsis">
@@ -1345,16 +1509,48 @@
           
         
       
+        
+      
     
     
     
     
       <li class="md-path__item">
-        <a href="././" class="md-path__link">
+        <a href="../../" class="md-path__link">
           
   
   <span class="md-ellipsis">
-    Sandbox
+    Kubernetes
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../0.%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    쿠버네티스 딥다이브
   </span>
 
         </a>
@@ -1371,8 +1567,68 @@
                 
                   
 
-<h1 id="sandbox">🏖️ Sandbox<a class="headerlink" href="#sandbox" title="Permanent link">&para;</a></h1>
-<p>Welcome to the Sandbox section.</p>
+<h1 id="2-kube-apiserver">2. kube-apiserver<a class="headerlink" href="#2-kube-apiserver" title="Permanent link">&para;</a></h1>
+<h2 id="k8s-hardway">k8s hardway?<a class="headerlink" href="#k8s-hardway" title="Permanent link">&para;</a></h2>
+<p>이번 실습은 Kubernetes의 각 핵심 컴포넌트 (kubelet, kube-apiserver, etcd, kube-scheduler, kube-controller-manager)를 하나의 머신 안에서 바이너리 형태로 직접 띄우며 내부 동작 원리를 이해하는 과정입니다.</p>
+<p>쿠버네티스 클러스터는 크게 두 가지(컨트롤 플레인, 워커 노드) 영역으로 구성됩니다. 컨트롤 플레인은 클러스터 내의 워커 노드와 파드를 관리하고, 워커 노드들은 컨테이너화된 애플리케이션을 실행합니다.</p>
+<p><img alt="k8s cluster" src="../1.1.image.png" /><sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<h2 id="kube-apiserver">kube-apiserver<a class="headerlink" href="#kube-apiserver" title="Permanent link">&para;</a></h2>
+<p><code>kube-apiserver</code>는 쿠버네티스 컨트롤 플레인의 프론트 엔드이며, 다음과 같은 프로세스<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>로 동작합니다.</p>
+<h3 id="kube-apiserver_1">kube-apiserver 동작 프로세스<a class="headerlink" href="#kube-apiserver_1" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>요청 수신: 사용자가 kubectl create pod과 같은 명령어를 실행하거나 애플리케이션이 REST API를 사용하여 Kubernetes와 상호작용할 때, 해당 요청은 API Server로 전송됩니다.</p>
+</li>
+<li>
+<p>인증 및 인가 (Authentication &amp; Authorization): API Server는 요청자의 신원을 확인(인증)하고, 요청자가 필요한 권한을 가지고 있는지 체크(인가)합니다.</p>
+</li>
+<li>
+<p>검증 및 어드미션 제어 (Validation &amp; Admission Control): 요청의 정확성을 검증하며, 어드미션 컨트롤러가 추가적인 정책(예: 리소스 쿼터 제한, 보안 제약 조건 등)을 강제할 수 있습니다.</p>
+</li>
+<li>
+<p>etcd에 데이터 영구 저장: 요청이 유효한 경우, API Server는 모든 Kubernetes 객체를 보유하는 키-값 저장소인 etcd에 데이터를 기록하여 클러스터 상태를 업데이트합니다.</p>
+</li>
+<li>
+<p>다른 구성 요소에 알림 (Informing Other Components): API Server는 스케줄러(새로운 Pod 생성 시)나 컨트롤러 매니저(복제 및 스케일링 시)와 같은 관련 구성 요소에 알림을 보냅니다.</p>
+</li>
+<li>
+<p>응답 반환: 마지막으로 API Server는 성공 또는 실패 여부를 나타내는 응답을 다시 보냅니다.</p>
+</li>
+</ol>
+<h3 id="kubernetes-component">Kubernetes Component와의 주요 상호작용<a class="headerlink" href="#kubernetes-component" title="Permanent link">&para;</a></h3>
+<p>쿠버네티스의 모든 Component는 서로 직접 통신하지 않고, API Server를 통해 상호작용합니다.</p>
+<p><img alt="kube-apiserver" src="../2.1.image.png" /><sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup></p>
+<ul>
+<li>
+<p><code>etcd</code>: API Server는 etcd와 직접 통신하는 유일한 구성 요소로, 클러스터 상태 정보를 저장하고 가져옵니다.</p>
+</li>
+<li>
+<p><code>controller manager</code>: 컨트롤러들은 API Server의 변경 사항을 감시(Watch)하고 이에 따라 적절한 조치를 취합니다. (예: Deployment가 항상 원하는 수의 Pod를 유지하도록 보장)</p>
+</li>
+<li>
+<p><code>scheduler</code>: API Server는 새로운 Pod 생성 요청을 받아 스케줄러에 알리고(Inform), 스케줄러는 Pod를 할당할 적당한 노드를 골라 다시 API Server에게 전달합니다.</p>
+</li>
+<li>
+<p><code>kubelet</code>: 워커 노드의 <code>kubelet</code>은 API Server와 통신하여 Pod 생성 관련 정보를 받습니다.</p>
+</li>
+<li>
+<p><code>kubectl</code> 및 외부 클라이언트: CLI 도구인 <code>kubectl</code> 및 기타 외부 클라이언트는 클러스터 리소스를 관리하기 위해 API Server와 통신합니다.</p>
+</li>
+</ul>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="https://kubernetes.io/ko/docs/concepts/architecture">https://kubernetes.io/ko/docs/concepts/architecture</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="https://www.linkedin.com/pulse/understanding-kubernetes-api-server-how-works-why-its-sawant-pvdsf/">https://www.linkedin.com/pulse/understanding-kubernetes-api-server-how-works-why-its-sawant-pvdsf/</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p><a href="https://www.redhat.com/en/blog/kubernetes-deep-dive-api-server-part-1">https://www.redhat.com/en/blog/kubernetes-deep-dive-api-server-part-1</a>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1412,7 +1668,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 6. 컨테이너 만들기">
+          <a href="../1.kubelet/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 1. kubelet">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
@@ -1422,11 +1678,27 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                6. 컨테이너 만들기
+                1. kubelet
               </div>
             </div>
           </a>
         
+        
+          
+          <a href="../../../linux/" class="md-footer__link md-footer__link--next" aria-label="Next: 🐧 Linux">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                🐧 Linux
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
         
       </nav>
     
@@ -1461,10 +1733,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.6e5f0216.min.js"></script>
       
     
   </body>
