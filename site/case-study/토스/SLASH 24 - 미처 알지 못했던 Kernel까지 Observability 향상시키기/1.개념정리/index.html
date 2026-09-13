@@ -1,0 +1,2559 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A new project generated from the default template project.">
+      
+      
+        <meta name="author" content="Chanho Jung">
+      
+      
+        <link rel="canonical" href="https://chjung99.github.io/case-study/%ED%86%A0%EC%8A%A4/SLASH%2024%20-%20%EB%AF%B8%EC%B2%98%20%EC%95%8C%EC%A7%80%20%EB%AA%BB%ED%96%88%EB%8D%98%20Kernel%EA%B9%8C%EC%A7%80%20Observability%20%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EA%B8%B0/1.%EA%B0%9C%EB%85%90%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="prev" href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/">
+      
+      
+        <link rel="next" href="../../../../kubernetes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.43">
+    
+    
+      
+        <title>1.개념정리 - Chanho's Wiki</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../../assets/stylesheets/modern/main.fba56155.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#numa" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Chanho&#x27;s Wiki" class="md-header__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Chanho's Wiki
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1.개념정리
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Chanho&#x27;s Wiki" class="md-nav__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    Chanho's Wiki
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-rocket" viewBox="0 0 24 24"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Chanho's Wiki
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Case study
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Case study
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  토스
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  토스
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_1" id="__nav_2_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0.발표내용
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1.개념정리
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1.개념정리
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#numa" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        왜 토스는 하드웨어 아키텍처(NUMA)까지 건들일 수 밖에 없었나?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numa_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        NUMA란?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실제 하드웨어 구성 예시
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#os-numa" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        OS에서는 NUMA를 어떻게 인식할까?
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OS에서는 NUMA를 어떻게 인식할까?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-acpi-sratslit" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1 계층: (하드웨어) ACPI SRAT/SLIT → 커널에 토폴로지 전달
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sysdevicessystemnode" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2 계층: (커널 코어) /sys/devices/system/node 로 노출
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-first-touch-mbindset_mempolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3 계층: (메모리 정책) First-touch 정책 + mbind/set_mempolicy
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 계층: (메모리 정책) First-touch 정책 + mbind&#x2f;set_mempolicy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        왜 필요한가?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정책이 결정하는 것
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        대표 예시
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        기본값 (정책을 아무것도 안 정하면?)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        적용 범위 (누구에게 적용되는 규칙인가)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vmavirtual-memory-area" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정책 우선순위 — VMA(Virtual Memory Area) 정책이 프로세스 정책보다 우선
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-vma" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Task와 VMA의 관계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpuset" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        cpuset과의 관계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-auto-numa-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4 계층: (스케줄러) Auto NUMA Balancing
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 계층: (스케줄러) Auto NUMA Balancing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        문제 상황 예시
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-numa-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Auto NUMA Balancing이 하는 일
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Page Fault란
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-numactl-libnuma-cgroups" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5 계층: (사용자 도구) numactl, libnuma, cgroups
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 계층: (사용자 도구) numactl, libnuma, cgroups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-numactl" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. numactl — 커맨드라인에서 바로 강제하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-libnuma" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. libnuma — 프로그램 코드 안에서 직접 제어하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cgroups-cpuset" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. cgroups (cpuset) — 컨테이너/그룹 단위로 통째로 묶기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        전체 계층 최종 정리
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../kubernetes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Kubernetes
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  쿠버네티스 딥다이브
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  쿠버네티스 딥다이브
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/0.%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0. 개요 및 환경 설정
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/1.kubelet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. kubelet
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/2.kube-apiserver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2. kube-apiserver
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../linux/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Linux
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Linux
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../linux/container%20primitives/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Container primitives
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Container primitives
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/container%20primitives/1.Namespace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. Namespace
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Networking stack
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Networking stack
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/networking%20stack/L3.Netfilter%20And%20Iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  L3.Netfilter And Iptables
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  도커 없이 컨테이너 만들기
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  도커 없이 컨테이너 만들기
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/0.%20%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%20%EC%84%A4%EC%A0%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0. 개요 및 환경 설정
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/1.chroot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. chroot
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/2.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2. 컨테이너 파일시스템
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/3.overlayFS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3. OverlayFS
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/4.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EA%B2%A9%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4. 컨테이너 격리
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/5.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EC%9E%90%EC%9B%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5. 컨테이너 자원
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6. 컨테이너 만들기
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#numa" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        왜 토스는 하드웨어 아키텍처(NUMA)까지 건들일 수 밖에 없었나?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#numa_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        NUMA란?
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실제 하드웨어 구성 예시
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#os-numa" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        OS에서는 NUMA를 어떻게 인식할까?
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OS에서는 NUMA를 어떻게 인식할까?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-acpi-sratslit" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1 계층: (하드웨어) ACPI SRAT/SLIT → 커널에 토폴로지 전달
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sysdevicessystemnode" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2 계층: (커널 코어) /sys/devices/system/node 로 노출
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-first-touch-mbindset_mempolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3 계층: (메모리 정책) First-touch 정책 + mbind/set_mempolicy
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 계층: (메모리 정책) First-touch 정책 + mbind&#x2f;set_mempolicy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        왜 필요한가?
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정책이 결정하는 것
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        대표 예시
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        기본값 (정책을 아무것도 안 정하면?)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        적용 범위 (누구에게 적용되는 규칙인가)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vmavirtual-memory-area" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정책 우선순위 — VMA(Virtual Memory Area) 정책이 프로세스 정책보다 우선
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-vma" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Task와 VMA의 관계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpuset" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        cpuset과의 관계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-auto-numa-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4 계층: (스케줄러) Auto NUMA Balancing
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 계층: (스케줄러) Auto NUMA Balancing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        문제 상황 예시
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto-numa-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Auto NUMA Balancing이 하는 일
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Page Fault란
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-numactl-libnuma-cgroups" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5 계층: (사용자 도구) numactl, libnuma, cgroups
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5 계층: (사용자 도구) numactl, libnuma, cgroups">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-numactl" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. numactl — 커맨드라인에서 바로 강제하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-libnuma" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. libnuma — 프로그램 코드 안에서 직접 제어하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cgroups-cpuset" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. cgroups (cpuset) — 컨테이너/그룹 단위로 통째로 묶기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        전체 계층 최종 정리
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Chanho's Wiki
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Case study
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    토스
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <h1 id="__skip">1.개념정리</h1>
+
+<h2 id="numa">왜 토스는 하드웨어 아키텍처(NUMA)까지 건들일 수 밖에 없었나?<a class="headerlink" href="#numa" title="Permanent link">&para;</a></h2>
+<p>일반적으로 클라우드 환경에서 쿠버네티스를 운영하는 조직에서는 Bare Metal 타입 인스턴스를 사용하지않는 한 하드웨어 아키텍처까지 내려가서 최적화 할 일이 많지 않을 것 같습니다.</p>
+<p>하지만 토스에서는 자체 데이터 센터를 운영 중이며, 물리 장비를 직접 구성해서 그 위에 쿠버네티스 클러스터를 구성해서 사용중인 환경입니다.</p>
+<p>발표 내용에서 데이터 센터의 인프라 증설 비용도 언급하고 있는 만큼 가지고 있는 장비를 "최대한 효율적으로" 활용하는 게 그들의 목표일 수 밖에 없습니다.</p>
+<p>아마도 이런 문제가 있었을 것 같습니다.</p>
+<ul>
+<li>새로운 서비스들은 계속 늘어나서 CPU 사용량이 증가하고 있음</li>
+<li>인프라 투자 비용은 무한정 늘릴 수 없기 때문에 예산 팀에서 압박이 들어옴</li>
+</ul>
+<p>→ 사용량은 계속 느는데, 무턱대고 느는만큼 CPU를 사서 꽂을 수는 없다
+→ 일단 최대한 지금 있는 장비로 버틸 수 없을까?
+→ CPU 시간 낭비를 줄여보자
+→ CPU 시간 분석해보니깐 Page Fault에서 NUMA 관련 시스템 콜(do_numa_page, migrate_misplaced_page) 비중이 높네?
+→ 이 시스템 콜로 인한 시간을 줄이면 CPU 효율을 증가시킬 수 있겠다</p>
+<h2 id="numa_1">NUMA란?<a class="headerlink" href="#numa_1" title="Permanent link">&para;</a></h2>
+<p>마치 발표내용에서는 NUMA가 문제의 주범인 것처럼 묘사되어 있어서 NUMA를 안쓰면 되는 것 아닌가하는 생각도 들 수 있습니다.</p>
+<p>하지만 위 사례의 핵심 문제는 "NUMA 아키텍처를 고려하지 못한 채 배치되는 페이지" 입니다. 왜 페이지들이 배치될 때 NUMA 아키텍처를 고려하지 못했는 지는 잠시 뒤 알아보기로 하고, 우선 NUMA의 기술적 배경부터 알아보겠습니다.</p>
+<p><img alt="0" src="../1.0.image.png" /></p>
+<p>초기 컴퓨터 구조는 UMA(Uniform Memory Access) 구조였습니다.</p>
+<ul>
+<li>이 구조는 CPU Core가 하나의 메모리 컨트롤러를 통해 메모리에 엑세스하는 구조로 CPU가 아무리 빠르게 명령어를 처리해도 Memory IO는 Memory Controller의 성능에 의존하게 됩니다.</li>
+<li>Core가 수백 수천개로 확장된다고 했을 때 하나의 Memory Controller를 통해 메모리에 접근하는 구조라면 결국 Memory Controller의 성능에 수렴하게 되므로 CPU를 늘리는 의미가 없는 것이지요</li>
+</ul>
+<p>이러한 문제를 극복하기 위해 NUMA(Non Uniform Memory Access) 구조가 탄생했습니다.</p>
+<ul>
+<li>NUMA에서는 CPU Socket 별로 Numa Node를 구성하여 소켓별 메모리 컨트롤러를 통해 로컬 DRAM에 액세스하는 구조입니다.</li>
+<li>Core가 수백 수천개로 확장된다고 했을 때 Numa Node도 같이 확장되므로 Local DRAM에 접근하는 경우 CPU 성능을 극대화할 수 있습니다</li>
+<li>그러나 Local DRAM에 접근하는 경우 외에, Remote Access가 발생하게 되면 지연시간이 추가됩니다 (Remote Access 시에는 QPI/UPI/Infinity Fabric 같은 노드 간 인터커넥트를 거쳐야 하므로 지연시간이 추가됨)</li>
+<li>OS나 애플리케이션이 NUMA를 인지하지 못하면, 스레드는 Node 0에서 실행되는데 메모리는 Node 1에 할당되는 식의 비효율이 발생할 수 있고 이를 막기 위해 NUMA-aware 스케줄링/메모리 할당 필요합니다</li>
+</ul>
+<p>정리하면 NUMA는 하드웨어가 알아서 최적화해주는 게 아니라, <strong>OS/애플리케이션이 "이 데이터를 어느 노드에 둘지" 인지하고 있어야 실제 이득을 본다</strong>는 것입니다.</p>
+<h2 id="_1">실제 하드웨어 구성 예시<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p><img alt="1" src="../1.1.image.png" /></p>
+<p>실제 메인보드 상에서 NUMA 아키텍처가 구현된 모습<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>입니다. 그림에서는 4개의 CPU 소켓이 보이고, 소켓 마다 옆에 메모리 슬롯이 보입니다. 간단하게 이해해보면 이렇게 노란 박스 형태로 구성된 메모리와 CPU가 하나의 NUMA 노드가 됩니다.</p>
+<p>소켓 가까이에 있는 메모리 슬롯에 접근하면 Local Access가 되고, 소켓과 멀리 떨어진 메모리 슬롯에 접근하면 Remote Access가 됩니다.</p>
+<p><img alt="2" src="../1.2.image.png" /></p>
+<p>좀 더 자세히 실제 서버 예시로 AMD EPYC 9004 서버의 구성<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>을 확인해보겠습니다. </p>
+<ol>
+<li>I/O DIE<ul>
+<li>다이어그램 중앙의 회색 막대. 메모리 컨트롤러, PCIe/Infinity Fabric 등 입출력 관련 기능을 모아놓은 다이(die)입니다. CCD들과 xGMI 링크가 모두 이 I/O 다이를 거쳐 연결됩니다.</li>
+</ul>
+</li>
+<li>CCD (Core Complex Die)<ul>
+<li>다이어그램 상하단의 진한 청록색 블록들("CCD"라고 표시). 실제 CPU 코어들이 들어있는 다이입니다. EPYC는 여러 개의 CCD 칩렛을 I/O 다이 주위에 배치하는 칩렛(chiplet) 구조를 씁니다. 그림에서 한 소켓에 CCD가 총 12개(상단 6개 + 하단 6개) 있습니다.</li>
+</ul>
+</li>
+<li>UCM (Unified Memory Controller)<ul>
+<li>파란색 작은 블록들("UCM"). 메모리 채널을 제어하는 컨트롤러로, I/O 다이와 실제 메모리 모듈(DIMM) 사이를 연결합니다. 그림에서 한 소켓당 UCM이 12개(양쪽에 6개씩) 있고, 각각 왼쪽/오른쪽의 DIMM(메모리 모듈, 세로 막대 아이콘들)로 이어집니다.</li>
+</ul>
+</li>
+<li>DIMM (Dual In-line Memory Module)<ul>
+<li>좌우 바깥쪽에 세로로 배열된 짙은 색 막대들. 실제 RAM 모듈을 나타내며, UCM을 통해 I/O 다이에 연결됩니다.  </li>
+</ul>
+</li>
+<li>xGMI (Global Memory Interconnect)<ul>
+<li>AMD의 소켓 간(그리고 다이 간) 고속 연결 기술입니다. Infinity Fabric의 소켓 간 버전으로, 두 CPU가 서로의 메모리·데이터에 접근할 수 있게 해줍니다. 이 그림에서는 두 소켓의 I/O 다이끼리 xGMI로 연결되어 있습니다.</li>
+</ul>
+</li>
+</ol>
+<p>각 소켓을 감싸는 분홍 점선 테두리는 하나의 NUMA 도메인 경계를 표시합니다. 즉 소켓 1 전체(CCD + I/O 다이 + UCM + 메모리)가 NUMA 노드 1이고, 소켓 2 전체가 NUMA 노드 2라는 것을 알 수 있습니다.</p>
+<h2 id="os-numa">OS에서는 NUMA를 어떻게 인식할까?<a class="headerlink" href="#os-numa" title="Permanent link">&para;</a></h2>
+<p>위에서 알아본대로 NUMA는 하드웨어 아키텍처이며, 이를 OS에서 인식하지 않으면 오히려 이득이 아니라 손해가 될 수 있습니다. 그렇다면, OS에서는 어떻게 NUMA를 인식하고 지원할 수 있을까요?</p>
+<p>Linux에서 NUMA를 지원하는 방법에 대해 알아보겠습니다.</p>
+<p><img alt="3" src="../1.3.image.png" /></p>
+<h3 id="1-acpi-sratslit">1 계층: (하드웨어) ACPI SRAT/SLIT → 커널에 토폴로지 전달<a class="headerlink" href="#1-acpi-sratslit" title="Permanent link">&para;</a></h3>
+<ul>
+<li>리눅스 커널은 부팅 시점에 CPU가 몇개고, 어떤 CPU가 어떤 메모리와 가까운지 알 수 없음</li>
+<li>하드웨어 벤더가 BIOS를 통해 이 정보를 표준 형식으로 알려줘야 하는 데, 그 표준이 ACPI (Advanced Configuration and Power Interface)임</li>
+<li>리눅스 커널에서는 ACPI를 통해 전달받은 정보를 ACPI Tables<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup>라는 이름으로 저장</li>
+<li>ACPI Tables에 NUMA 전용 테이블 SRAT(System Resource Affinity Table)와 SLIT(System Locality Distance Information Table)이 포함됨</li>
+<li>SRAT - 누가 어디 있는 지 (위치정보)<ul>
+<li>커널은 SRAT을 읽어서 시스템에 프로세서가 몇개 있고, 코어 1~4가 프로세서 1에 속하고 코어 5~8이 프로세서 2에 속한다는 걸 알게 됨</li>
+<li>또한 프로세서와 연관된 메모리 범위도 상세히 기술하는데, 물리 메모리 0~64GB가 프로세서 1에, 64GB ~ 128GB가 프로세서 2에 연결되어 있다는 걸 감지함</li>
+<li>정리하면 어떤 CPU 및 물리 메모리 주소 범위가 어떤 NUMA 노드에 속하는지를 알 수 있다</li>
+</ul>
+</li>
+<li>SLIT - 얼마나 먼지 (거리 정보)<ul>
+<li>커널은 SLIT을 읽어서 모든 NUMA 노드의 상대적 거리에 대한 지도를 만든다
+    <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Node0  Node1
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Node0  10    21
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>Node1  21    10
+</span></code></pre></div></li>
+<li>SLIT은 이러한 NxN 거리 매트릭스이다. 자기 자신의 거리는 10을 기준값으로 갖고 나머지 노드는 그보다 큰 값으로 표현된다</li>
+<li>커널 스케줄러는 이 거리 정보를 이용해서 애플리케이션 스레드를 메모리가 상주한 위치에 가장 가까운 CPU 코어에서 실행시킨다.</li>
+<li>단 SLIT 거리가 정확한 실측치가 아니라 펌웨어가 대략 알려주는 힌트에 가깝고 부정확한 경우가 드물지 않다</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-sysdevicessystemnode">2 계층: (커널 코어) /sys/devices/system/node 로 노출<a class="headerlink" href="#2-sysdevicessystemnode" title="Permanent link">&para;</a></h3>
+<ul>
+<li>SRAT/SLIT로 파싱한 정보를 사용자가 볼 수 있게 재포장</li>
+<li>sysfs 파일시스템 형태로 외부에 노출하는 게 이 계층의 역할
+  <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>  /sys/devices/system/node/
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  ├── node0/
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  │   ├── cpu0, cpu1, cpu2, cpu3    ← 이 노드에 속한 CPU (심볼릭 링크)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  │   ├── cpumap                    ← CPU 목록 비트마스크
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  │   ├── distance                  ← 다른 노드들까지의 거리
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  │   ├── meminfo                   ← 이 노드의 메모리 정보
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  │   └── numastat                  ← 로컬/원격 접근 통계
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  ├── node1/
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  │   └── ...(동일 구조)
+</span></code></pre></div></li>
+<li>numactl이 바로 이 sysfs를 읽는 것<ul>
+<li><code>numactl --hardware</code> 명령어는 <strong>바로 이 <code>/sys/devices/system/node/</code> 아래 파일들을 파싱해서 보여주는 것</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-first-touch-mbindset_mempolicy">3 계층: (메모리 정책) First-touch 정책 + mbind/set_mempolicy<a class="headerlink" href="#3-first-touch-mbindset_mempolicy" title="Permanent link">&para;</a></h3>
+<ul>
+<li>지금까지 지도를 그려서 보관하는 방법에 대해 이야기했음, 이제는 그 지도를 언제 쓰는지에 대해 이야기할 것</li>
+<li>실제 프로그램이 <code>malloc()</code> 으로 메모리를 요청하는 순간 커널은 결정을 내려야 함<ul>
+<li>이 프로그램한테 줄 메모리는 어떤 NUMA node에서 줄까? 이 결정을 내리는 규칙이 바로 <strong>메모리 정책</strong></li>
+</ul>
+</li>
+<li>메모리 정책이란 NUMA 시스템에서, 프로세스가 메모리를 요청했을 때 커널이 <strong>"몇 번 노드의 메모리를 줄 것인가"</strong>를 정하는 소프트웨어 규칙 <sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></li>
+<li>하드웨어가 "어떤 메모리가 어느 CPU에 물리적으로 가까운지"를 정해놓으면, 메모리 정책은 "그럼 실제로 어느 걸 골라 쓸지"를 소프트웨어가 결정하는 규칙</li>
+</ul>
+<h4 id="_2">왜 필요한가?<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>NUMA 시스템에서는:</p>
+<ul>
+<li>소켓1에 있는 CPU가 <strong>소켓1 옆 메모리</strong>에 접근하면 빠름 (로컬)</li>
+<li>소켓1에 있는 CPU가 <strong>소켓2 옆 메모리</strong>에 접근하면 느림 (리모트, 인터커넥트를 거쳐야 함)</li>
+</ul>
+<p>그런데 프로그램이 <code>malloc()</code>으로 메모리를 요청하면, 커널은 <strong>"이 메모리를 어느 노드에서 떼어줄지"</strong>를 결정해야 합니다. 이때 사용하는 규칙이 바로 메모리 정책입니다.</p>
+<h4 id="_3">정책이 결정하는 것<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<p>메모리 정책 = <strong>모드(mode) + 노드 목록(선택)</strong></p>
+<table>
+<thead>
+<tr>
+<th>구성 요소</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>모드</strong></td>
+<td>어떤 방식으로 노드를 고를지 (예: 특정 노드에만 고정, 우선 순위, 여러 노드에 분산 등)</td>
+</tr>
+<tr>
+<td><strong>노드 목록</strong></td>
+<td>그 방식을 적용할 대상 노드들 (예: 노드 0번, 혹은 0,1번)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="_4">대표 예시<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&quot;MPOL_BIND, 노드 0&quot;  → 무조건 노드 0에서만 메모리를 가져와라
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&quot;MPOL_INTERLEAVE, 노드 0,1&quot;  → 노드 0과 1에 번갈아가며 분산해서 가져와라
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>&quot;MPOL_PREFERRED, 노드 0&quot;  → 가능하면 노드 0에서, 안 되면 다른 데서라도 가져와라
+</span></code></pre></div>
+<h4 id="_5">기본값 (정책을 아무것도 안 정하면?)<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h4>
+<ul>
+<li>시스템이 평상시 켜져 있을 땐, <strong>"로컬 할당(local allocation)"</strong>이 기본값입니다</li>
+<li>즉, "지금 이 코드를 실행 중인 CPU와 가장 가까운 노드에서 메모리를 줘라"가 기본 동작입니다</li>
+<li>그래서 대부분의 프로그램은 아무 설정 안 해도 어느 정도 자동으로 NUMA에 최적화되어 동작합니다</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="mi">1</span><span class="n">GB</span><span class="p">);</span><span class="w">   </span><span class="c1">// ① 이 순간엔 아무 일도 안 일어남 (주소만 예약)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">                 </span><span class="c1">// ② 이 순간! 실제로 메모리를 처음 건드림 (= &quot;touch&quot;)</span>
+</span></code></pre></div>
+<ul>
+<li>malloc 순간에는 예약만 해두고, 실제 접근을 할 때 실행 중인 코어 기준이라 first touch 정책이라고도 합니다</li>
+</ul>
+<h4 id="_6">적용 범위 (누구에게 적용되는 규칙인가)<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<p>정책은 <strong>범위(scope)</strong> 단위로 걸 수 있습니다:</p>
+<ul>
+<li>시스템 전체 기본값</li>
+<li>특정 프로세스 전체</li>
+<li>프로세스의 특정 메모리 영역(주소 범위)만</li>
+<li>여러 프로세스가 공유하는 메모리 객체</li>
+</ul>
+<h4 id="vmavirtual-memory-area">정책 우선순위 — VMA(Virtual Memory Area) 정책이 프로세스 정책보다 우선<a class="headerlink" href="#vmavirtual-memory-area" title="Permanent link">&para;</a></h4>
+<p>VMA 정책은 페이지 폴트가 발생할 때 프로세스 정책보다 우선순위를 갖는다</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>System Default Policy (최종 폴백, local allocation 사용)
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>        ↑
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Task Policy
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        ↑
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>VMA Policy
+</span></code></pre></div>
+<p>페이지 폴트 발생 시 정책 확인 순서</p>
+<ol>
+<li>해당 VMA(메모리 영역)에 mbind()로 정책이 설정되어 있나? → 있으면 그걸 사용</li>
+<li>없으면 프로세스 전체에 set_mempolicy()로 설정된 정책 사용</li>
+<li>그것도 없으면 기본값(First-touch, 커널 내부에서는 MPOL_DEFAULT/MPOL_LOCAL) 사용</li>
+</ol>
+<h4 id="task-vma">Task와 VMA의 관계<a class="headerlink" href="#task-vma" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>Task란 리눅스 커널 입장에서 <strong>"실행 중인 하나의 흐름"</strong> — 우리가 흔히 말하는 프로세스(process) 또는 스레드(thread)
+</p>
+</blockquote>
+<p>일반적으로는 "프로세스"라는 말을 쓰지만, 리눅스 커널 내부에서는 <strong>프로세스와 스레드를 구분하지 않고 둘 다 "task"라는 하나의 개념</strong>으로 관리합니다.</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">task_struct</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">};</span><span class="w">   </span><span class="c1">// 커널 내부에서 프로세스든 스레드든 전부 이 구조체 하나로 표현</span>
+</span></code></pre></div>
+<ul>
+<li>프로세스 하나 = task 하나</li>
+<li>스레드가 3개인 프로세스 = task 3개 (단, 이 3개가 같은 주소 공간을 공유)</li>
+</ul>
+<p>즉 커널 관점에서는 "프로세스 안에 스레드가 여러 개 있다"가 아니라, <strong>"task가 여러 개인데, 이것들이 같은 메모리 주소 공간을 공유하고 있다"</strong>로 봅니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>[Task] = 실행되고 있는 하나의 흐름 (프로세스 또는 스레드)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>   │
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>   └─ 이 Task가 쓰는 가상 주소 공간 안에
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>         ├─ [VMA 1] 코드 영역
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>         ├─ [VMA 2] 힙
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>         ├─ [VMA 3] 스택
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>         └─ ...
+</span></code></pre></div>
+<ul>
+<li><strong>Task</strong> = "누가" 실행되고 있는지 (주체)</li>
+<li><strong>VMA</strong> = 그 Task가 쓰는 메모리 공간을 "어떻게" 쪼갠 조각들 (객체)</li>
+</ul>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>System Default Policy       ← 시스템 전체 기본 규칙
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>        ↑
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Task Policy                 ← &quot;이 프로세스(또는 이 스레드)는 이 규칙을 써라&quot;
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        ↑
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>VMA Policy                  ← &quot;이 프로세스 안의 이 메모리 조각만은 이 규칙을 써라&quot;
+</span></code></pre></div>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Task 정책: 이 프로세스 전체의 기본 규칙을 노드1로 고정</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">set_mempolicy</span><span class="p">(</span><span class="n">MPOL_BIND</span><span class="p">,</span><span class="w"> </span><span class="n">node1_mask</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1">// VMA 정책: 그 중에서도 이 특정 메모리 영역만 예외적으로 인터리브</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">mbind</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">length</span><span class="p">,</span><span class="w"> </span><span class="n">MPOL_INTERLEAVE</span><span class="p">,</span><span class="w"> </span><span class="n">all_nodes_mask</span><span class="p">,</span><span class="w"> </span><span class="p">...);</span>
+</span></code></pre></div>
+<h4 id="cpuset">cpuset과의 관계<a class="headerlink" href="#cpuset" title="Permanent link">&para;</a></h4>
+<p>cpuset은 관리자가 "이 프로세스 그룹은 이 노드들만 써라"라고 강제하는 관리 도구이고, 메모리 정책은 애플리케이션이 스스로 "나는 이렇게 메모리를 할당받고 싶다"고 요청하는 프로그래밍 인터페이스입니다. 둘 다 적용되면 cpuset이 우선합니다.</p>
+<h3 id="4-auto-numa-balancing">4 계층: (스케줄러) Auto NUMA Balancing<a class="headerlink" href="#4-auto-numa-balancing" title="Permanent link">&para;</a></h3>
+<p>3계층까지 이해한 것을 정리해보면</p>
+<blockquote>
+<p>프로그램이 메모리를 처음 쓰는 순간, "지금 실행 중인 코어와 같은 노드"에서 메모리를 떼어준다 (first-touch)</p>
+</blockquote>
+<p>그런데 "지금 실행 중인 코어"는 시간이 지나면 바뀔 수 있습니다.</p>
+<h4 id="_7">문제 상황 예시<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>1. 프로그램이 노드0의 코어에서 시작 → 메모리도 노드0에 할당됨 (first-touch)
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>2. 시간이 흘러, 리눅스 스케줄러가 부하 분산을 위해
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>   이 프로그램을 노드1의 코어로 옮김
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>3. 결과: 코어는 노드1인데, 메모리는 여전히 노드0에 있음
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>   → 매번 메모리 접근할 때마다 원격(remote) 접근 발생 → 느려짐
+</span></code></pre></div>
+<p>3계층(메모리 정책)은 "처음 할당할 때"만 신경 쓰는 규칙이라서, 이렇게 나중에 코어가 옮겨가서 생기는 불일치는 못 잡아줍니다. 이때 필요한 것이 바로 <strong>Auto NUMA Balancing</strong> 입니다.</p>
+<h4 id="auto-numa-balancing">Auto NUMA Balancing이 하는 일<a class="headerlink" href="#auto-numa-balancing" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>커널이 주기적으로 "지금 코어와 메모리가 잘 붙어있나?"를 확인하고, 안 맞으면 둘 중 하나를 옮겨서 다시 맞춰준다</p>
+</blockquote>
+<p>먼저 어떻게 안 맞다라는 것을 감지할까요?</p>
+<p>커널은 의도적인 page fault(NUMA hinting fault)를 만들어서 확인합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>1. 프로세스가 쓰는 메모리 페이지들을 주기적으로 &quot;접근 금지&quot; 상태로 만들어 놓음
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>2. 프로그램이 그 페이지를 건드리면 &quot;어? 막혀있네&quot; 하고 커널에 신호(fault)가 감
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>3. 커널이 그 신호를 받아서 다시 메모리 CPU 위치 관계를 다시 판단 &quot;아, 지금 이 코드는 노드1 코어에서 도는데, 메모리는 노드0에 있었구나&quot; 라고 기록
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>4. 이런 일이 반복해서 쌓이면 → &quot;이 페이지는 노드1로 옮겨야겠다&quot; 판단 → 옮김
+</span></code></pre></div>
+<p>즉 일부러 살짝 "함정"을 걸어놓고, 프로그램이 그 함정에 걸릴 때마다 통계를 모아서 재배치를 결정하는 방식입니다.</p>
+<p>마지막으로 다시 맞춰주기 위해 아래 두 가지 방법 중 상황에 맞는 걸 선택합니다</p>
+<ul>
+<li>
+<p>방법 1. 메모리 마이그레이션: 메모리를 코어 쪽으로 옮긴다</p>
+</li>
+<li>
+<p>방법 2. 태스크 마이그레이션: 태스크(코드 실행)를 메모리 쪽으로 옮긴다</p>
+</li>
+</ul>
+<h4 id="page-fault">Page Fault란<a class="headerlink" href="#page-fault" title="Permanent link">&para;</a></h4>
+<blockquote>
+<p>CPU가 메모리 주소에 접근하려는데, 그 접근이 정상적으로 처리될 수 없을 때 발생하는 하드웨어 예외(exception)입니다. CPU가 "어? 이 주소 처리 못하겠는데, 커널아 네가 처리해" 하고 커널에게 제어권을 넘기는 메커니즘 전체를 page fault라고 부릅니다.</p>
+</blockquote>
+<p>Page Fault의 종류</p>
+<table>
+<thead>
+<tr>
+<th>종류</th>
+<th>발생 원인</th>
+<th>예시</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Major fault</strong></td>
+<td>페이지가 아예 물리 메모리에 없음</td>
+<td>처음 malloc한 메모리를 처음 write할 때 (3계층 first-touch가 여기서 발생), 스왑된 페이지를 다시 불러올 때</td>
+</tr>
+<tr>
+<td><strong>Minor fault</strong></td>
+<td>페이지는 물리 메모리에 있는데, 접근 권한/매핑이 아직 안 걸려있음</td>
+<td>Copy-on-write</td>
+</tr>
+<tr>
+<td><strong>Protection fault</strong></td>
+<td>페이지는 있는데, 커널이 <strong>의도적으로 접근 금지 플래그를 걸어둔 상태</strong></td>
+<td>← <strong>4계층 Auto NUMA Balancing이 쓰는 방식이 이것</strong></td>
+</tr>
+</tbody>
+</table>
+<p>사실 위에서 알아본 NUMA hinting fault가 사용하는 방식이 바로 Protection fault입니다.</p>
+<p>Protection fault은 아래와 같이 동작합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>1. 커널이 일부러 특정 페이지의 권한 비트를 &quot;접근 불가&quot;로 바꿔놓음
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>   (페이지 자체는 이미 물리 메모리에 존재함 — 없어서가 아니라 일부러 막아둔 것)
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>2. 프로그램이 그 주소를 읽거나 쓰려고 시도
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>3. CPU가 하드웨어 레벨에서 &quot;권한 없음&quot;을 감지 → page fault 발생
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>4. 커널의 fault 핸들러가 호출됨
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>5. 커널은 이때 &quot;누가(어느 코어가), 어느 페이지에 접근했는지&quot; 기록
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>6. 다시 접근 가능하게 권한을 풀어줌 (동작 자체는 정상적으로 계속 진행됨)
+</span></code></pre></div>
+<p>즉 핵심은 의도적으로 page fault를 발생시키면서 "누가(어느 코어가), 어느 페이지에 접근했는지" 기록하는 것입니다. 이를 통해 Remote Access가 발생하고 있는 지 통계적으로 확인할 수 있습니다.</p>
+<p>이러한 Auto NUMA Balancing 켜져 있는 지는 아래 명령어를 통해 확인 할 수 있습니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>cat<span class="w"> </span>/proc/sys/kernel/numa_balancing<span class="w">     </span><span class="c1"># 1이면 켜짐, 0이면 꺼짐</span>
+</span></code></pre></div>
+<p>커널 자체 기본값으로 NUMA 노드가 2개 이상이면 자동으로 켜지게 설정되며, 단일 노드 머신에서는 꺼져있습니다.</p>
+<h3 id="5-numactl-libnuma-cgroups">5 계층: (사용자 도구) numactl, libnuma, cgroups<a class="headerlink" href="#5-numactl-libnuma-cgroups" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>1계층: 하드웨어가 지도를 줌
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>2계층: 커널이 지도를 파일로 저장
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>3계층: 커널이 &quot;기본 규칙&quot;대로 메모리를 배치 (first-touch)
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>4계층: 커널이 알아서 사후 교정 (Auto NUMA Balancing)
+</span></code></pre></div>
+<p>여기까지는 전부 사람이 개입 안 해도 커널이 자동으로 처리하는 부분이었습니다. 5계층은 다릅니다:</p>
+<blockquote>
+<p>커널의 자동 규칙이 마음에 안 들 때, 사용자가 직접 명령을 내려서 강제로 바꾸는 도구들</p>
+</blockquote>
+<h4 id="1-numactl">1. numactl — 커맨드라인에서 바로 강제하기<a class="headerlink" href="#1-numactl" title="Permanent link">&para;</a></h4>
+<p>가장 쉽고 많이 쓰는 방법입니다. 프로그램을 실행할 때 앞에 붙여서 규칙을 지정합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a># 현재 시스템의 NUMA 구조 확인
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>numactl --hardware
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a># 무조건 노드 0의 CPU와 메모리만 써서 실행
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>numactl --cpunodebind=0 --membind=0 ./myapp
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a># 여러 노드에 메모리를 골고루 분산 (대역폭 극대화용)
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>numactl --interleave=all ./myapp
+</span></code></pre></div>
+<p>내부적으로는 3계층에서 얘기했던 set_mempolicy(), mbind() 시스템콜을 대신 호출해주는 <strong>껍데기(wrapper)</strong>일 뿐입니다.</p>
+<h4 id="2-libnuma">2. libnuma — 프로그램 코드 안에서 직접 제어하기<a class="headerlink" href="#2-libnuma" title="Permanent link">&para;</a></h4>
+<p>numactl은 프로그램 실행할 때 한 번만 설정 가능한데, 프로그램 실행 도중에 동적으로 세밀하게 조정하고 싶을 땐 코드 안에서 직접 API를 씁니다.</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;numa.h&gt;</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1">// 노드 1에서만 메모리 할당</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numa_alloc_onnode</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="c1">// 이 스레드를 노드 1의 CPU에서만 돌리기</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">numa_run_on_node</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></code></pre></div>
+<h4 id="3-cgroups-cpuset">3. cgroups (cpuset) — 컨테이너/그룹 단위로 통째로 묶기<a class="headerlink" href="#3-cgroups-cpuset" title="Permanent link">&para;</a></h4>
+<p><code>numactl</code>이 "프로그램 하나"를 대상으로 한다면, cgroups는 <strong>여러 프로세스를 묶은 그룹 전체</strong>를 대상으로 합니다. Docker, Kubernetes 같은 컨테이너 환경에서 주로 사용합니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a># cpuset cgroup으로 특정 그룹을 노드 0에만 묶기
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>echo 0 &gt; /sys/fs/cgroup/cpuset/mygroup/cpuset.mems
+</span></code></pre></div>
+<p>Kubernetes의 "Topology Manager"가 파드(pod)를 배치할 때 내부적으로 이 cpuset 메커니즘을 활용해서, 파드 하나가 여러 NUMA 노드에 걸쳐 흩어지지 않도록 관리합니다.</p>
+<table>
+<thead>
+<tr>
+<th>도구</th>
+<th>적용 대상</th>
+<th>언제 씀</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>numactl</td>
+<td>프로그램 실행 1회</td>
+<td>커맨드라인에서 바로 테스트/실행할 때</td>
+</tr>
+<tr>
+<td>libnuma</td>
+<td>코드 내부</td>
+<td>프로그램 자체가 NUMA를 알아서 최적화하도록 만들 때</td>
+</tr>
+<tr>
+<td>cgroups(cpuset)</td>
+<td>프로세스 그룹/컨테이너 전체</td>
+<td>컨테이너 오케스트레이션(Docker, K8s) 환경에서</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_8">전체 계층 최종 정리<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>1계층: 하드웨어(BIOS) → SRAT/SLIT로 커널에 토폴로지 알려줌
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>2계층: 커널이 그 정보를 /sys/devices/system/node 파일로 저장
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>3계층: 커널이 &quot;실행 중인 코어와 같은 노드&quot;에서 메모리 배치 (first-touch, 기본 규칙)
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>4계층: 커널이 주기적으로 코어-메모리 위치가 맞는지 감시, 안 맞으면 재배치 (Auto NUMA Balancing)
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>5계층: 사용자가 규칙을 numactl/libnuma/cgroups로 직접 오버라이드
+</span></code></pre></div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="https://www.dbi-services.com/blog/sql-server-automatic-soft-numa-and-uneven-cpu-load/">https://www.dbi-services.com/blog/sql-server-automatic-soft-numa-and-uneven-cpu-load/</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="https://docs.amd.com/api/khub/documents/rFyoKZfMPtrSygqSeku8MA/content">https://docs.amd.com/api/khub/documents/rFyoKZfMPtrSygqSeku8MA/content</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p><a href="https://docs.kernel.org/driver-api/cxl/platform/acpi.html">https://docs.kernel.org/driver-api/cxl/platform/acpi.html</a>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p><a href="https://docs.kernel.org/admin-guide/mm/numa_memory_policy.html">https://docs.kernel.org/admin-guide/mm/numa_memory_policy.html</a>&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 0.발표내용">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                0.발표내용
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../../kubernetes/" class="md-footer__link md-footer__link--next" aria-label="Next: ☸️ Kubernetes">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                ☸️ Kubernetes
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Chanho Jung
+
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../../../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      
+    
+  </body>
+</html>
