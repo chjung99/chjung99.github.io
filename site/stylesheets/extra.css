@@ -47,8 +47,15 @@
 }
 
 /* 3. Fix color token styling (prevent light-mode dark text overrides on dark background) */
-.md-typeset .highlight span {
+.md-typeset .highlight pre span {
     color: #f8fafc; /* Default fallback for tokens under forced dark background */
+}
+
+/* Code block title badge (from title="..." on the fence) */
+.md-typeset .highlight span.filename {
+    background-color: #1e293b;
+    color: #f8fafc;
+    border-bottom: none;
 }
 
 /* Vibrant Pygments Syntax Customization (Only inside .highlight block code) */
