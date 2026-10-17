@@ -1,0 +1,2475 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A new project generated from the default template project.">
+      
+      
+        <meta name="author" content="Chanho Jung">
+      
+      
+        <link rel="canonical" href="https://chjung99.github.io/programming/Golang/Delve%EB%A1%9C%20%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EC%9B%90%EA%B2%A9%20%EB%94%94%EB%B2%84%EA%B9%85%ED%95%98%EA%B8%B0/">
+      
+      
+        <link rel="prev" href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.43">
+    
+    
+      
+        <title>Delve로 쿠버네티스 원격 디버깅하기 - Chanho's Wiki</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../assets/stylesheets/modern/main.fba56155.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Chanho&#x27;s Wiki" class="md-header__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Chanho's Wiki
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Delve로 쿠버네티스 원격 디버깅하기
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Chanho&#x27;s Wiki" class="md-nav__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    Chanho's Wiki
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-rocket" viewBox="0 0 24 24"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Chanho's Wiki
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Case study
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Case study
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  토스
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  토스
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_1" id="__nav_2_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../case-study/%ED%86%A0%EC%8A%A4/SLASH%2024%20-%20%EB%AF%B8%EC%B2%98%20%EC%95%8C%EC%A7%80%20%EB%AA%BB%ED%96%88%EB%8D%98%20Kernel%EA%B9%8C%EC%A7%80%20Observability%20%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EA%B8%B0/0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0.발표내용
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../case-study/%ED%86%A0%EC%8A%A4/SLASH%2024%20-%20%EB%AF%B8%EC%B2%98%20%EC%95%8C%EC%A7%80%20%EB%AA%BB%ED%96%88%EB%8D%98%20Kernel%EA%B9%8C%EC%A7%80%20Observability%20%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EA%B8%B0/1.%EA%B0%9C%EB%85%90%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1.개념정리
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../case-study/%ED%86%A0%EC%8A%A4/SLASH%2024%20-%20%EB%AF%B8%EC%B2%98%20%EC%95%8C%EC%A7%80%20%EB%AA%BB%ED%96%88%EB%8D%98%20Kernel%EA%B9%8C%EC%A7%80%20Observability%20%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EA%B8%B0/2.%EC%83%81%EC%84%B8%EB%B6%84%EC%84%9D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2.상세분석
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../kubernetes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Kubernetes
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  쿠버네티스 딥다이브
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  쿠버네티스 딥다이브
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/0.%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0. 개요 및 환경 설정
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/1.kubelet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. kubelet
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/2.kube-apiserver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2. kube-apiserver
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../linux/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Linux
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Linux
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../linux/container%20primitives/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Container primitives
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Container primitives
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/container%20primitives/1.Namespace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. Namespace
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Networking stack
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Networking stack
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/networking%20stack/L3.Netfilter%20And%20Iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  L3.Netfilter And Iptables
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  도커 없이 컨테이너 만들기
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  도커 없이 컨테이너 만들기
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/0.%20%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%20%EC%84%A4%EC%A0%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0. 개요 및 환경 설정
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/1.chroot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. chroot
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/2.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2. 컨테이너 파일시스템
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/3.overlayFS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3. OverlayFS
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/4.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EA%B2%A9%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4. 컨테이너 격리
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/5.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EC%9E%90%EC%9B%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5. 컨테이너 자원
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6. 컨테이너 만들기
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Programming
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Programming
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Golang
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Golang
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Delve로 쿠버네티스 원격 디버깅하기
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Delve로 쿠버네티스 원격 디버깅하기
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        요약
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        들어가며
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        로컬 디버깅
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="로컬 디버깅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-gcflags-all-n-l" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        옵션 (<code>-gcflags all=-N -l</code>) 알아보기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dlvdelve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        dlv(Delve) 알아보기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        로컬 디버깅 구조
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        원격 디버깅
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="원격 디버깅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        예제
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. 로컬에서 빌드하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. 로컬에서 빌드한 바이너리를 서버로 전달하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-delve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. 서버에서 Delve 설치하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-delve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. 서버에서 Delve로 바이너리 실행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-goland" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. 로컬 코드에디터에서 서버 연결하기 (GoLand)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6. 원격 디버깅 수행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        쿠버네티스 원격 디버깅하기
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="쿠버네티스 원격 디버깅하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. 로컬에서 빌드하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. 로컬에서 빌드한 바이너리를 서버로 전달하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-delve_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. 서버에서 Delve로 바이너리 실행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-goland" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. 로컬 코드에디터에서 서버 연결하기 (GoLand)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. 원격 디버깅 수행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        요약
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        들어가며
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        로컬 디버깅
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="로컬 디버깅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-gcflags-all-n-l" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        옵션 (<code>-gcflags all=-N -l</code>) 알아보기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dlvdelve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        dlv(Delve) 알아보기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        로컬 디버깅 구조
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        원격 디버깅
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="원격 디버깅">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        예제
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. 로컬에서 빌드하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. 로컬에서 빌드한 바이너리를 서버로 전달하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-delve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. 서버에서 Delve 설치하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-delve" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. 서버에서 Delve로 바이너리 실행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-goland" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. 로컬 코드에디터에서 서버 연결하기 (GoLand)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        6. 원격 디버깅 수행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        쿠버네티스 원격 디버깅하기
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="쿠버네티스 원격 디버깅하기">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        1. 로컬에서 빌드하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        2. 로컬에서 빌드한 바이너리를 서버로 전달하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-delve_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        3. 서버에서 Delve로 바이너리 실행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-goland" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        4. 로컬 코드에디터에서 서버 연결하기 (GoLand)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        5. 원격 디버깅 수행하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Chanho's Wiki
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Programming
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="././" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Golang
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <h1 id="__skip">Delve로 쿠버네티스 원격 디버깅하기</h1>
+
+<h2 id="_1">요약<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<blockquote>
+<ul>
+<li>Delve를 활용하여 쿠버네티스 원격 디버깅 방법을 정리합니다.</li>
+<li>원격 디버깅을 위한 코드 에디터 설정 및 빌드 옵션 설정 등 실습을 다룹니다.</li>
+</ul>
+</blockquote>
+<h2 id="_2">들어가며<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>우리는 프로그램을 개발할 때 코드가 어떻게 동작하는 지 직접 확인하기 위해 디버깅을 합니다. 로컬에서 실행할 수 있는 코드라면 코드 에디터를 사용하면서 브레이크 포인트를 지정하고 디버깅 기능을 실행하면 됩니다. 그런데 만약 쿠버네티스 코드를 디버깅하려면 어떻게 해야 할까요?</p>
+<p>일반적으로는 쿠버네티스 코드를 디버깅할 일이 없지만, 쿠버네티스 일부를 커스텀해야하거나 세부 동작을 확인하고 싶을 때 아래 방법을 활용할 수 있습니다.</p>
+<h2 id="_3">로컬 디버깅<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>한번 간단한 go 프로그램을 로컬에서 디버깅 해보겠습니다. 원하는 지점에 Break Point를 걸어두고 디버그 버튼을 눌러주면 아래와 같은 화면이 나옵니다.</p>
+<p><img alt="0" src="../0.0.image.png" /></p>
+<p>콘솔 출력 부분을 집중에서 확인해보겠습니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>GOROOT=/opt/homebrew/opt/go/libexec #gosetup
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>GOPATH=/Users/username/go #gosetup
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>/opt/homebrew/opt/go/libexec/bin/go build -o /Users/username/Library/Caches/JetBrains/GoLand2026.2/tmp/GoLand/___1go_build_go_debug -gcflags all=-N -l go-debug #gosetup
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>/Applications/GoLand.app/Contents/plugins/go-plugin/lib/dlv/macarm/dlv --listen=127.0.0.1:65223 --headless=true --api-version=2 --check-go-version=false --only-same-user=false exec /Users/a11624/Library/Caches/JetBrains/GoLand2026.2/tmp/GoLand/___1go_build_go_debug -- #gosetup
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>API server listening at: 127.0.0.1:65223
+</span></code></pre></div>
+<p>각 줄을 살펴보면,</p>
+<ul>
+<li>GOROOT, GOPATH를 설정해주고</li>
+<li><code>-gcflags all=-N -l</code> 옵션을 설정해서 소스 코드를 빌드하고</li>
+<li>dlv라는 도구를 127.0.0.1:65223에서 동작시키면서 방금 빌드한 소스코드 바이너리를 함께 exec 합니다</li>
+</ul>
+<h3 id="-gcflags-all-n-l">옵션 (<code>-gcflags all=-N -l</code>) 알아보기<a class="headerlink" href="#-gcflags-all-n-l" title="Permanent link">&para;</a></h3>
+<p><code>-gcflags all=-N -l</code>옵션은 디버거가 소스 코드 기준으로 변수와 실행 흐름을 정확히 보여주게 하려고, 컴파일러의 최적화를 꺼두는 옵션입니다.</p>
+<table>
+<thead>
+<tr>
+<th>부분</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-gcflags</code></td>
+<td>Go 컴파일러(gc)에 넘기는 옵션</td>
+</tr>
+<tr>
+<td><code>all=</code></td>
+<td>내 코드뿐 아니라 의존 패키지와 표준 라이브러리에도 적용</td>
+</tr>
+<tr>
+<td><code>-N</code></td>
+<td>최적화 끄기</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>인라이닝 끄기 (함수 호출을 호출 자리에 펼쳐 넣는 최적화)</td>
+</tr>
+</tbody>
+</table>
+<p>최적화를 켜면 컴파일러가 코드를 소스와 다르게 바꿔버려서, 디버거가 보여주는 모습이 소스와 어긋나기 때문입니다. 
+옵션을 주면 소스와 기계어가 거의 1:1로 대응해서, 변수가 다 보이고 한 줄씩 따라가는 디버깅이 자연스럽게 됩니다.</p>
+<h3 id="dlvdelve">dlv(Delve) 알아보기<a class="headerlink" href="#dlvdelve" title="Permanent link">&para;</a></h3>
+<p>Delve는 Go 언어 전용 디버거이고, dlv는 그 실행 명령어입니다. Go 프로세스를 제어하면서 중단점을 걸고, 변수와 스택을 읽고, 한 줄씩 실행하게 해주는 엔진입니다.</p>
+<table>
+<thead>
+<tr>
+<th>명령</th>
+<th>하는 일</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dlv debug</code></td>
+<td>소스를 디버그용으로 빌드하고 바로 디버깅 시작</td>
+</tr>
+<tr>
+<td><code>dlv exec ./app</code></td>
+<td>이미 빌드된 바이너리를 Delve가 실행하며 디버깅</td>
+</tr>
+<tr>
+<td><code>dlv attach &lt;PID&gt;</code></td>
+<td>이미 돌고 있는 프로세스에 붙기</td>
+</tr>
+<tr>
+<td><code>dlv test</code></td>
+<td>테스트 코드를 디버깅</td>
+</tr>
+<tr>
+<td><code>dlv core ./app core파일</code></td>
+<td>죽은 프로세스의 코어 덤프를 사후 분석</td>
+</tr>
+</tbody>
+</table>
+<p>GDB 같은 범용 디버거로도 Go를 디버깅할 수는 있지만, Go의 런타임 구조를 잘 모릅니다. Go는 OS 스레드 위에 고루틴이라는 자체 실행 단위를 얹어 쓰고, 슬라이스, 맵, 채널, 인터페이스 같은 Go 특유의 타입이 있습니다. Delve는 이런 구조를 이해해서 다음을 할 수 있어요.</p>
+<ul>
+<li>고루틴 목록을 보고 고루틴 단위로 스택을 전환</li>
+<li>슬라이스, 맵, 채널의 내용을 Go 방식으로 해석해서 표시</li>
+<li>Go 컴파일러가 남기는 DWARF 정보를 정확히 해석</li>
+</ul>
+<p>참고로 여기서 DWARF란 컴파일된 바이너리 안에 함께 저장되는 디버깅용 정보의 표준 형식입니다. 기계어와 소스 코드를 이어주는 번역 사전 역할을 합니다.
+컴파일하면 줄 번호, 변수 이름, 타입 같은 정보가 기계어에서 사라지는데, 디버거는 "main.go 12번 줄에서 i가 5"라고 사람에게 보여줘야 해서, 사라진 정보를 복원할 단서가 필요하고 그게 DWARF입니다.</p>
+<h3 id="_4">로컬 디버깅 구조<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>정리하면 로컬 코드 에디터에서 디버깅을 할 때 실제 내부에서는 아래와 같은 구조로 동작합니다.</p>
+<p><img alt="1" src="../0.1.image.png" /></p>
+<h2 id="_5">원격 디버깅<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>(<em>이 글은 로컬과 원격 서버가 SSH로 통신 가능한 경우를 가정해서 작성했습니다.</em>)</p>
+<p>구조는 매우 간단합니다. 로컬 디버깅 구조에서 localhost로 통신했던 것만 SSH로 변경됩니다.</p>
+<p>그리고 로컬에서 빌드한 바이너리를 서버에서 Delve를 통해 실행하면 코드 에디터에서 디버깅할 수 있습니다.</p>
+<p><img alt="2" src="../0.2.image.png" /></p>
+<h3 id="_6">예제<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>OS 정보를 출력하는 간단한 프로그램을 로컬에서 빌드한 뒤 서버에서 실행하여 디버깅해보겠습니다.</p>
+<div class="language-go highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="s">&quot;fmt&quot;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="s">&quot;os&quot;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="s">&quot;runtime&quot;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nx">hostname</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Hostname</span><span class="p">()</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="nx">pid</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Getpid</span><span class="p">()</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="nx">exe</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Executable</span><span class="p">()</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="nx">cwd</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Getwd</span><span class="p">()</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;hostname : %s\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">hostname</span><span class="p">)</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;pid      : %d\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">pid</span><span class="p">)</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;os/arch  : %s/%s\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">runtime</span><span class="p">.</span><span class="nx">GOOS</span><span class="p">,</span><span class="w"> </span><span class="nx">runtime</span><span class="p">.</span><span class="nx">GOARCH</span><span class="p">)</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;exe      : %s\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">exe</span><span class="p">)</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;cwd      : %s\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">cwd</span><span class="p">)</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">    </span><span class="nx">s</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;gopher&quot;</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Hello and welcome, %s!\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">s</span><span class="p">)</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;i =&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="o">/</span><span class="nx">i</span><span class="p">)</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="1">1. 로컬에서 빌드하기<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>현재 로컬은 MacOS (arm64)이고, 서버는 우분투 OS (amd64)이므로 아래 옵션을 추가해 빌드해줍니다.</p>
+<p>바이너리 실행 환경이 달라져서 추가된 옵션을 제외하곤, 로컬 디버깅 때와 동일합니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="nv">GOOS</span><span class="o">=</span>linux<span class="w"> </span><span class="nv">GOARCH</span><span class="o">=</span>amd64<span class="w">   </span>go<span class="w"> </span>build<span class="w">   </span>-gcflags<span class="o">=</span><span class="s2">&quot;all=-N -l&quot;</span><span class="w">   </span>-o<span class="w"> </span>app-debug<span class="w">   </span>.
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>└────<span class="w"> </span>환경변수<span class="w"> </span><span class="o">(</span>빌드<span class="w"> </span>환경<span class="w"> </span>지정<span class="o">)</span><span class="w"> </span>────┘<span class="w">        </span>└<span class="w"> </span>명령<span class="w"> </span>┘<span class="w">     </span>└──<span class="w"> </span>컴파일러<span class="w"> </span>옵션<span class="w"> </span>──┘<span class="w">     </span>└<span class="w"> </span>출력<span class="w"> </span>┘<span class="w">     </span>└<span class="w"> </span>대상
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>변수</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GOOS=linux</code></td>
+<td>결과물을 실행할 <strong>운영체제</strong>는 리눅스</td>
+</tr>
+<tr>
+<td><code>GOARCH=amd64</code></td>
+<td>결과물을 실행할 <strong>CPU 종류</strong>는 x86-64</td>
+</tr>
+<tr>
+<td><code>CGO_ENABLED=0</code></td>
+<td>C 코드 연동(cgo)을 끔</td>
+</tr>
+</tbody>
+</table>
+<p>이 두 가지(<code>GOOS</code>, <code>GOARCH</code>)가 <strong>크로스 컴파일</strong>의 핵심이에요. 지금 빌드하는 곳은 맥(darwin/arm64)이지만, 결과물은 VM(linux/amd64)에서 돌아야 하니까 "대상은 이거야"라고 알려주는 겁니다. Go는 별도 도구 없이 이 변수만 바꿔도 다른 플랫폼용 바이너리를 만들 수 있어요.</p>
+<p><code>CGO_ENABLED=0</code>을 쓰는 이유는 cgo를 켜면 C 컴파일러와 리눅스용 C 라이브러리가 빌드 환경에 필요해서 맥에서 크로스 컴파일이 실패하기 쉽기 때문이에요. 끄면 <strong>순수 Go 코드만으로 빌드</strong>되고, 외부 라이브러리에 의존하지 않는 정적 바이너리가 나와서 VM에 옮겨도 라이브러리 문제 없이 실행됩니다.</p>
+<p>빌드 실행 결과로 <code>app-debug</code>라는 바이너리 파일이 생성됩니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ls<span class="w"> </span>-l
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>total<span class="w"> </span><span class="m">5096</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>-rwxr-xr-x@<span class="w"> </span><span class="m">1</span><span class="w"> </span>user<span class="w">  </span>group<span class="w">  </span><span class="m">2597575</span><span class="w"> </span>Oct<span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="m">21</span>:51<span class="w"> </span>app-debug
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>-rw-r--r--@<span class="w"> </span><span class="m">1</span><span class="w"> </span>user<span class="w">  </span>group<span class="w">       </span><span class="m">25</span><span class="w"> </span>Oct<span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="m">20</span>:59<span class="w"> </span>go.mod
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>-rw-r--r--@<span class="w"> </span><span class="m">1</span><span class="w"> </span>user<span class="w">  </span>group<span class="w">      </span><span class="m">497</span><span class="w"> </span>Oct<span class="w"> </span><span class="m">14</span><span class="w"> </span><span class="m">21</span>:51<span class="w"> </span>main.go
+</span></code></pre></div>
+<h3 id="2">2. 로컬에서 빌드한 바이너리를 서버로 전달하기<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>scp<span class="w"> </span>./app-debug<span class="w"> </span><span class="o">{</span>USER<span class="o">}</span>@<span class="o">{</span>HOST<span class="o">}</span>:<span class="o">{</span>DIR<span class="o">}</span>/app-debug
+</span></code></pre></div>
+<h3 id="3-delve">3. 서버에서 Delve 설치하기<a class="headerlink" href="#3-delve" title="Permanent link">&para;</a></h3>
+<p>`서버에서 Delve를 설치하는 공식 방법은 아래 명령어를 실행하는 것입니다. 다만 해당 방식은 서버에서 go를 설치해야하고, 버전을 맞춰줘야 하는 사전 작업이 필요합니다.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>go<span class="w"> </span>install<span class="w"> </span>github.com/go-delve/delve/cmd/dlv@latest
+</span></code></pre></div></p>
+<p>저의 경우 서버에 설치된 go 버전이 낮아서 거기에 맞는 dlv 버전을 찾는 것보단 로컬에서 dlv 역시 빌드해서 바이너리만 가져오는 방식을 택했습니다. 참고로 Go는 결과물이 의존성 없는 단일 바이너리라서, 서버에는 실행 파일만 있으면 되고 컴파일러는 필요 없습니다. 이게 Go의 큰 장점입니다.</p>
+<p>따라서 아래 명령어 대로 로컬에서 빌드 후 서버로 넘겨줄 수 있습니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">OUT_DIR</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/dlv-out&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">TMP</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="s2">&quot;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$OUT_DIR</span><span class="s2">&quot;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TMP</span><span class="s2">&quot;</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>go<span class="w"> </span>mod<span class="w"> </span>init<span class="w"> </span>dlvbuild
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nv">GOFLAGS</span><span class="o">=</span>-mod<span class="o">=</span>mod<span class="w"> </span>go<span class="w"> </span>get<span class="w"> </span>github.com/go-delve/delve/cmd/dlv@latest
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nv">GOOS</span><span class="o">=</span>linux<span class="w"> </span><span class="nv">GOARCH</span><span class="o">=</span>amd64<span class="w"> </span><span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>go<span class="w"> </span>build<span class="w"> </span>-o<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$OUT_DIR</span><span class="s2">/dlv&quot;</span><span class="w"> </span>github.com/go-delve/delve/cmd/dlv
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$TMP</span><span class="s2">&quot;</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>file<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$OUT_DIR</span><span class="s2">/dlv&quot;</span>
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>scp<span class="w"> </span>~/dlv-out/dlv<span class="w"> </span><span class="o">{</span>USER<span class="o">}</span>@<span class="o">{</span>HOST<span class="o">}</span>:~/
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>ssh<span class="w"> </span><span class="o">{</span>USER<span class="o">}</span>@<span class="o">{</span>HOST<span class="o">}</span><span class="w"> </span><span class="s1">&#39;chmod +x ~/dlv &amp;&amp; ~/dlv version&#39;</span>
+</span></code></pre></div>
+<details class="tip">
+<summary>Go 빌드 자세히 알아보기</summary>
+<p><strong>Go는 프로그램을 돌리는 데 필요한 것을 전부 실행 파일 하나 안에 넣어서 만들어요.</strong> 그래서 그 파일만 서버에 올리면 서버에는 Go 관련 아무것도 깔려 있지 않아도 실행됩니다.</p>
+<p>Python 프로그램을 서버에서 돌리려면 서버에 이런 것들이 있어야 해요.</p>
+<ul>
+<li>Python 인터프리터 (그것도 호환되는 버전으로)</li>
+<li>프로그램이 쓰는 라이브러리 (<code>pip install</code>로 설치한 것들)</li>
+</ul>
+<p>파일(<code>.py</code>)만 옮겨서는 안 돌아가고, <strong>실행 환경을 서버에 똑같이 구성</strong>해야 하죠.</p>
+<p>Go는 이렇게 달라요.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Python</th>
+<th>Go</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>서버에 옮기는 것</td>
+<td>소스 파일 + (라이브러리 설치)</td>
+<td>실행 파일 하나</td>
+</tr>
+<tr>
+<td>서버에 필요한 것</td>
+<td>인터프리터, 라이브러리</td>
+<td>없음 (리눅스 커널만 있으면 됨)</td>
+</tr>
+<tr>
+<td>실행</td>
+<td><code>python app.py</code></td>
+<td><code>./app</code></td>
+</tr>
+</tbody>
+</table>
+<p>Go 컴파일러는 빌드할 때 이것들을 <strong>전부 합쳐서 하나의 파일로</strong> 만들어요.</p>
+<ul>
+<li>내가 쓴 코드</li>
+<li>내가 가져다 쓴 외부 라이브러리 코드</li>
+<li>표준 라이브러리(<code>fmt</code> 같은 것들)</li>
+<li>Go 런타임 (고루틴 스케줄러, 가비지 컬렉터 등)</li>
+</ul>
+<p>즉 "실행에 필요한 부품"이 파일 안에 이미 들어 있어서, 서버에서 따로 가져올 게 없어요. 이런 방식을 <strong>정적 링킹</strong>이라고 합니다. 앞에서 <code>CGO_ENABLED=0</code>으로 빌드한 이유도 이거예요. cgo를 켜면 시스템의 C 라이브러리를 빌려 쓰게 돼서 "서버에 그 라이브러리가 있어야 한다"는 의존성이 생기는데, 끄면 정말 완전히 혼자 돌아가는 파일이 나옵니다.`</p>
+</details>
+<h3 id="4-delve">4. 서버에서 Delve로 바이너리 실행하기<a class="headerlink" href="#4-delve" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>~/dlv<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>./app-debug<span class="w"> </span>--headless<span class="w"> </span>--listen<span class="o">=</span><span class="m">127</span>.0.0.1:2345
+</span></code></pre></div>
+<h3 id="5-goland">5. 로컬 코드에디터에서 서버 연결하기 (GoLand)<a class="headerlink" href="#5-goland" title="Permanent link">&para;</a></h3>
+<p>먼저 로컬에서 서버와 SSH 연결을 만들어 로컬 포트 포워딩을 수행하도록 설정합니다</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>ssh<span class="w"> </span>-L<span class="w"> </span><span class="m">2345</span>:127.0.0.1:2345<span class="w"> </span><span class="o">{</span>USER<span class="o">}</span>@<span class="o">{</span>HOST<span class="o">}</span>
+</span></code></pre></div>
+<p>이후 코드 에디터(GoLand)에서 Run/Debug Configuration에서 GoRemote를 클릭해 Add Configuration을 선택합니다. 
+그리고 아래와 같이 Host와 Port를 설정해주면 됩니다. </p>
+<p><img alt="3" src="../0.3.image.png" /></p>
+<h3 id="6">6. 원격 디버깅 수행하기<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<p>이제 위에서 생성한 app-debug라는 Configuration으로 실행하도록 설정하고, break point를 건 뒤 디버그를 실행하면 아래와 같이 실제 원격 호스트 이름이 나오는 걸 확인할 수 있습니다. </p>
+<p><img alt="4" src="../0.4.image.png" /></p>
+<h2 id="_7">쿠버네티스 원격 디버깅하기<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<p>이제 본론입니다. 지금까지 알아본대로 동일한 과정을 거치면 됩니다. 쿠버네티스의 많은 컴포넌트 중에 <code>Kubelet</code>을 디버깅해보겠습니다.</p>
+<h3 id="1_1">1. 로컬에서 빌드하기<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>먼저 Goland Project에 clone 받았던 kubernetes에서 <code>/cmd/kubelet</code> 부분을 로컬에서 빌드합니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">cd</span><span class="w"> </span>~/GolandProjects/kubernetes
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>~/kubelet-build
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nv">VERSION</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>describe<span class="w"> </span>--tags<span class="w"> </span>--abbrev<span class="o">=</span><span class="m">0</span><span class="k">)</span><span class="w">   </span><span class="c1"># 예: v1.30.14</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nv">GOOS</span><span class="o">=</span>linux<span class="w"> </span><span class="nv">GOARCH</span><span class="o">=</span>amd64<span class="w"> </span><span class="nv">CGO_ENABLED</span><span class="o">=</span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>go<span class="w"> </span>build<span class="w"> </span>-gcflags<span class="w"> </span><span class="s2">&quot;all=-N -l&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span>-ldflags<span class="w"> </span><span class="s2">&quot;-X k8s.io/component-base/version.gitVersion=</span><span class="nv">$VERSION</span><span class="s2"> -X k8s.io/client-go/pkg/version.gitVersion=</span><span class="nv">$VERSION</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">  </span>-o<span class="w"> </span>~/kubelet-build/kubelet<span class="w"> </span>./cmd/kubelet
+</span></code></pre></div>
+<h3 id="2_1">2. 로컬에서 빌드한 바이너리를 서버로 전달하기<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>gzip<span class="w"> </span>-c<span class="w"> </span>~/kubelet-build/kubelet<span class="w"> </span><span class="p">|</span><span class="w"> </span>ssh<span class="w"> </span><span class="o">{</span>USER<span class="o">}</span>@<span class="o">{</span>HOST<span class="o">}</span><span class="w"> </span><span class="s1">&#39;gunzip &gt; /tmp/kubelet.new&#39;</span>
+</span></code></pre></div>
+<h3 id="3-delve_1">3. 서버에서 Delve로 바이너리 실행하기<a class="headerlink" href="#3-delve_1" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># 변수 (경로는 환경에 맞게 수정)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nv">PORT</span><span class="o">=</span><span class="m">2345</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nv">DLV</span><span class="o">=</span>~/dlv
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="nv">LOG</span><span class="o">=</span>/tmp/dlv-kubelet.log
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># kubelet 중지 + 이전 dlv 정리</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>kubelet
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>sudo<span class="w"> </span>pkill<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;dlv.*--listen=.*:</span><span class="nv">$PORT</span><span class="s2">&quot;</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>sleep<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>pgrep<span class="w"> </span>-a<span class="w"> </span>kubelet<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;kubelet 프로세스 없음 (정상)&quot;</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="c1"># 바이너리 교체 (원본은 최초 1회만 백업)</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>/usr/bin/kubelet.orig<span class="w"> </span><span class="o">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>sudo<span class="w"> </span>cp<span class="w"> </span>-p<span class="w"> </span>/usr/bin/kubelet<span class="w"> </span>/usr/bin/kubelet.orig
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">755</span><span class="w"> </span>/tmp/kubelet.new<span class="w"> </span>/usr/bin/kubelet
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="c1"># systemd가 넘기던 인자 재현 (kubeadm이 생성한 파일)</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="nb">source</span><span class="w"> </span>/var/lib/kubelet/kubeadm-flags.env
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>sudo<span class="w"> </span>nohup<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/dlv&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="w">    </span>--headless<span class="w"> </span>--listen<span class="o">=</span><span class="s2">&quot;127.0.0.1:2345&quot;</span><span class="w"> </span>--api-version<span class="o">=</span><span class="m">2</span><span class="w"> </span>--accept-multiclient<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a><span class="w">    </span>--only-same-user<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="w">    </span><span class="nb">exec</span><span class="w"> </span>--continue<span class="w"> </span>/usr/bin/kubelet<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a><span class="w">    </span>--bootstrap-kubeconfig<span class="o">=</span>/etc/kubernetes/bootstrap-kubelet.conf<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="w">    </span>--kubeconfig<span class="o">=</span>/etc/kubernetes/kubelet.conf<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a><span class="w">    </span>--config<span class="o">=</span>/var/lib/kubelet/config.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="w">    </span><span class="nv">$KUBELET_KUBEADM_ARGS</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a><span class="w">    </span>&gt;<span class="w"> </span>/tmp/dlv-kubelet.log<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span><span class="p">&amp;</span>
+</span></code></pre></div>
+<h3 id="4-goland">4. 로컬 코드에디터에서 서버 연결하기 (GoLand)<a class="headerlink" href="#4-goland" title="Permanent link">&para;</a></h3>
+<p>먼저 로컬에서 서버와 SSH 연결을 만들어 로컬 포트 포워딩을 수행하도록 설정합니다</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>ssh<span class="w"> </span>-L<span class="w"> </span><span class="m">2345</span>:127.0.0.1:2345<span class="w"> </span><span class="o">{</span>USER<span class="o">}</span>@<span class="o">{</span>HOST<span class="o">}</span>
+</span></code></pre></div>
+<p>이후 코드 에디터(GoLand)에서 Run/Debug Configuration에서 GoRemote를 클릭해 Add Configuration을 선택합니다. 
+그리고 아래와 같이 Host와 Port를 설정해주면 됩니다. </p>
+<p><img alt="5" src="../0.5.image.png" /></p>
+<h3 id="5">5. 원격 디버깅 수행하기<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p>이제 위에서 설정한 k8s dlv 라는 Configuration으로 실행하도록 설정하고, break point를 <code>pkg/kubelet/cm/topologymanager/scope_container.go</code> 파일안에 <code>func (s *containerScope) Admit(pod *v1.Pod) lifecycle.PodAdmitResult</code> 함수에 건 뒤 디버그를 실행하겠습니다.</p>
+<p>해당 부분은 실제 Pod 속 컨테이너를 생성할 때 거치는 함수로, 파드가 생성될 때 실행됩니다.</p>
+<p>따라서 아래와 같이 테스트용 Pod를 생성해주겠습니다.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>run<span class="w"> </span>test-pod<span class="w"> </span>--image<span class="o">=</span>nginx<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--overrides<span class="o">=</span><span class="s1">&#39;{&quot;spec&quot;:{&quot;nodeSelector&quot;:{&quot;kubernetes.io/hostname&quot;:&quot;k8s-worker1-001&quot;}}}&#39;</span>
+</span></code></pre></div>
+<p>Pod가 생성 명령어가 들어오자마자 아래와 같이 실제 Pod Spec 변수들을 확인할 수 있습니다.</p>
+<p><img alt="6" src="../0.6.image.png" /></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 6. 컨테이너 만들기">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                6. 컨테이너 만들기
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Chanho Jung
+
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      
+    
+  </body>
+</html>
