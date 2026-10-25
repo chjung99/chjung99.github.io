@@ -711,6 +711,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#numasharedpolicy-cpu-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        numaSharedPolicy (CPU Manager)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -759,6 +770,8 @@
       
         
           
+        
+      
         
       
         
@@ -826,10 +839,6 @@
       
         
       
-        
-      
-        
-      
     
     
     
@@ -850,7 +859,7 @@
   <span class="md-ellipsis">
     
   
-  쿠버네티스 딥다이브
+  Operations
 
     
   </span>
@@ -862,6 +871,96 @@
         
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Operations
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/Operations/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%EC%97%90%EC%84%9C%20%EB%AC%B4%EC%A4%91%EB%8B%A8%20%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  쿠버네티스에서 무중단 배포하기
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  쿠버네티스 딥다이브
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             
   
@@ -1855,6 +1954,17 @@
     <span class="md-ellipsis">
       <span class="md-typeset">
         staticPolicy (Memory Manager)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numasharedpolicy-cpu-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        numaSharedPolicy (CPU Manager)
       </span>
     </span>
   </a>
@@ -3961,8 +4071,8 @@ CPU Manager와 Memory Manager의 가장 큰 차이는 관리하는 대상입니�
 해당 파드는 다른 코어를 사용하도록 재배치되게됩니다. 왜냐하면 이전에 공유 풀이었던 1번 코어가 배타적 할당 풀로 빠지게 되면서 공유 풀이 변경되기 때문입니다.</p>
 <p>반면 메모리의 경우는 조금 다릅니다. 시간을 기준으로 자원을 배분하는 CPU와 달리, 메모리는 물리적 공간(페이지 프레임)을 나눠 점유하는 방식으로 자원을 배분합니다. 따라서 용량이 한정되어 있고, 한번 점유한 페이지는 내용을 비우거나(reclaim/swap) 프로세스를 종료하지 않고서는 회수하기 어렵습니다. 한편 공유 라이브러리, page cache, CoW 같은 메커니즘으로 같은 물리 페이지를 여러 프로세스가 공유할 수는 있습니다.</p>
 <p>그렇게에 Memory Manager에서는 별도로 배타적 할당 풀, 공유 풀을 나눠서 추적하면서 갱신하지 않습니다.</p>
-<p>---설명계속 작성</p>
 <p>정리하면 CPU는 경합 자체를 막아야 하므로 나머지 컨테이너를 해당 코어에서 배제하는 반면, Memory는 NUMA 로컬 용량만 확보되면 공존이 허용되므로 나머지 컨테이너를 배제하지 않고 용량 회계로 관리합니다.</p>
+<p><img alt="6" src="../2.6.image.png" /></p>
 <p>먼저 인터페이스 구현 검증 부입니다. 아래 부분을 통해 staticPolicy가 Policy 인터페이스를 구현하고 있는 지 검증할 수 있습니다.</p>
 <div class="language-go highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="kd">var</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="nx">Policy</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">staticPolicy</span><span class="p">{}</span>
 </span></code></pre></div>
@@ -4295,6 +4405,83 @@ CPU Manager와 Memory Manager의 가장 큰 차이는 관리하는 대상입니�
 </ul>
 </li>
 </ol>
+<h4 id="numasharedpolicy-cpu-manager">numaSharedPolicy (CPU Manager)<a class="headerlink" href="#numasharedpolicy-cpu-manager" title="Permanent link">&para;</a></h4>
+<p>이제 앞서 살펴봤던 CPU Manager의 staticPolicy를 기반으로 새로운 정책인 numaSharedPolicy를 만들어보겠습니다.
+위 정책은 staticPolicy와 달리 아래 조건을 만족해야합니다.</p>
+<ul>
+<li>Pod의 QoS가 Guaranteed인 경우와 Burstable 인 경우까지 커버해야 한다</li>
+<li>CPU request가 양의 정수가 아니어도 된다</li>
+</ul>
+<p>고려해야 하는 것들</p>
+<ul>
+<li>Burstable을 하나의 NUMA 노드에 할당하려면 request 기준으로 할당할 건지, limit 기준으로 할당할 건지 (request로 하면 limit 만큼 리소스 사용이 증가할 때 쓰로틀링 남 / limit을 기준으로 하면 사실 상 리소스 과점유 Burstable인 이유가 없음 사실상 그냥 2배로 늘린 Guaranteed임)</li>
+<li>양의 정수로 딱 떨어지지 않을테니깐 그것을 합친 양만큼 하나의 NUMA 노드에 배치되게 끔 계산해줘야함</li>
+<li>여러 개의 컨테이너가 동일 NUMA 노드의 cpusets.cpu를 공유하므로 쓰로틀링 관리도 생각해야함</li>
+<li>state에 그래도 Reserved, NUMAShared, Shared, Assginable 풀을 관리해줘야함</li>
+</ul>
+<p>결국 StaticPolicy와 다른 핵심은 1코어에 1컨테이너 같이 정수로 떨어지는 코어수를 하나의 컨테이너가 점유하는 상황이 아니라는 점임. 일단 NUMA 노드의 전체 CPU Set에서 System Reserved를 뺀만큼을 모든 컨테이너가 공유하는 상황임. 그래서 원래 Static에는 쓰로틀링이 발생하지 않지만 이와 달리 CPU 코어를 불필요하게 공유하게 될 수 도 있음 (원래라면 0번 코어, 1번 코어 따로 쓰는데 여기선 CPUSet.CPU를 (0,1)로 같이 쓰니깐)</p>
+<p>cpuset: 어느 CPU에서 돌 수 있나</p>
+<p>cgroup의 cpuset.cpus 파일에 CPU 번호를 적어두면, 그 cgroup에 속한 프로세스는 거기 적힌 CPU에서만 스케줄됩니다.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a># /sys/fs/cgroup/.../cpuset.cpus
+</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>2-3
+</span></code></pre></div>
+<p>CFS quota: 주어진 시간 안에 얼마나 쓸 수 있나
+<div class="language-text highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a># cgroup v1
+</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>cpu.cfs_period_us = 100000   # 100ms 주기 (리눅스 기본값)
+</span><span id="__span-63-3"><a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>cpu.cfs_quota_us  = 200000   # 그 주기 동안 쓸 수 있는 CPU 시간 200ms
+</span><span id="__span-63-4"><a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a>
+</span><span id="__span-63-5"><a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a># cgroup v2는 한 파일에
+</span><span id="__span-63-6"><a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a>cpu.max = 200000 100000
+</span></code></pre></div></p>
+<p>정리하면 static 정책이었을 때 guaranteed 파드는 cpuset.cpus가 고정됐고 배타적 할당이 되었지만,
+numasharedPolicy에서는 guaranteed 파드라도 배타적 할당은 되지 않고 자원을 공유한다. 문제될것은 없다
+기본 값인 none policy에서는 원래 그렇게 동작한다. 다만 다른 점은 none policy와 static policy 중간정도라고 생각하면 될듯하다</p>
+<ul>
+<li>none에서는 전체 CPU가 defaultCPUSet이 되어서 모든 파드들이 모든 CPU에서 뜰 수 있다고 선언이 되는거고</li>
+<li>static에서는 배타적 할당 풀을 따로 나눠서 해당 파드의 컨테이너마다 cpuset.cpus를 지정한 뒤 defaultCPUSet(SHARED Pool)에서 제거하여 일반 파드는 거기서 못뜨게 막아줌</li>
+<li>numaSharedPolicy에서는 numanode 영역 단위로 SHARED Pool을 만든다고 생각하면 되고 왠만해서는 하나의 파드가 하나의 NUMA Node 안에서 뜰 수 있게 설정하고</li>
+<li>다른 Pod가 해당 Numa Node 안으로 들어오는 걸 굳이 막을 필요가 없다. 그냥 자연스럽게 request 기준으로 못들어오면 못들어오게 하면됨 (이건 스케줄러가 이미 앞단에서 해줌)</li>
+</ul>
+<p>그렇다면 numaSharedPolicy에서는 어떤 걸 관리해줘야하나?</p>
+<ul>
+<li>state를 가져야한다. state가 필요한 이유는 재시작 시에도 할당 결과를 가져가기 위함임</li>
+<li>일반적으로 kubelet이 재시작하면 defaultCPUSet으로 전체 CPU가 설정되버리는 데 이 과정에서 static policy 같은 경우 격리가 깨질 수 있음</li>
+<li>numaSharedPolicy에서는 마찬가지로 특정 파드가 가능하다면 특정 numanode의 cpuset만 사용하도록 설정해야함</li>
+<li>
+<p>재시작에도 이 설정을 유지하기 위해선 state에 기록 필수</p>
+</li>
+<li>
+<p>일반적으로 온프렘에서는 하나의 쿠버네티스 노드 안에 NUMA Node가 여러 대 있을 수 있음</p>
+</li>
+<li>Allocate 단계에서 해당 Pod에 NumaNode에 해당하는 cpuset.cpus 작성 요청 (작성하지 않으면 none policy처럼 부모의 cgroup 값을 받아서 전체 cpu로 설정됨)</li>
+<li>이렇게 지정하는 이유는 파드가 이쪽 저쪽에서 뜨면서 remote access가 발생하지 않게하려고 (local access 유도)</li>
+<li>
+<p>그리고 삭제 단계에서는 해당 cpuset.cpus 번호 제거</p>
+</li>
+<li>
+<p>numaNode에 대한 용량관리가 필요? 이건 필요는 없을 듯 왜냐하면 강제는 아니기 때문 일단 topologyHint(BestEffort)로 받아서 최대한 같은 numanode에서 배치되게 끔하고 만약 넘어가면 어쩔수 없이 그걸 쓰도록 하긴 해야함 (굳이 이걸 위해 할당 실패를 할 필요 없음)</p>
+</li>
+</ul>
+<p>의사결정 사항</p>
+<ul>
+<li>CPU request가 양의 정수가 아니어도 된다 -&gt; 포기 state 파일 수정까지 해야함 (일단 차근차근 하나씩 해결해보자)</li>
+<li>Burstable은 되고, CPU Request는 양의 정수로 (기존 대비 리소스 효율 증가)</li>
+<li>Memory Manager도 마찬가지로 여긴 원래 Guaranteed QoS만 됨에서 -&gt; Burstable까지 되는 policy로</li>
+<li>reservedCPU 를 고려할까 말까 static에서는 exclusive로 줘야하니 저걸 빼서 관리한건데.. 흠 none에서는 어차피 관리안하고 또 Node Allocatable 감소되긴 하는데</li>
+<li>numa node 단위 계산을 어떻게 할까? 원래는 numa node = node 였으면 어차피 스케줄러에서 계산해주니깐 안해줄까했다가 node안에 numa node 여러개가 가능하니깐 numa node별로 계산이 필요함</li>
+<li>GetAllocatableCPUs  전체 − reserved (정적, 노드 고정)   2-31</li>
+<li>GetAvailableCPUs    allocatable − 이미 할당된 것 (동적) 2-31 중 비어있는 것</li>
+</ul>
+<p>*** 중요
+- numa node의 topology 정보 = 몇번 CPU가 몇 번 numa node인지 -&gt; CPUDetails
+- 각 번호 별 CPU가 할당 된건지 정보 = state 정보 (즉 할당 정보는 state에서 관리)</p>
+<p>그럼 우리가 해야하는 것 -&gt; numa node 별 할당 정보를 state에 저장! (1번 numanode에는 몇 코어가 사용 중 -&gt; 몇 코어 남았으니 여기 배정 가능 -&gt; 힌트 생성)</p>
+<p>고려해야하는 점</p>
+<ul>
+<li>일단 Node 전체 사이즈 보고 들어오는 요청은 Numa node 걸치더라도 허용할 거니깐 admission 거부는 안만들어도 되고</li>
+<li>Burstable을 허용함에 따라 NumaNode 안에 평상시에는 다 같이 request 미만으로 쓰다가 갑자기 하나가 Numa Node 용량보다 크게 쓰는 경우에 어떻게 해야할지? 이 경우엔 eviction이 진행되고 removecontainer가 됨 (단 이는 Memory limit을 초과했을 때이지 cpu의 경우 추출되지 않고 쓰로틀링이 계속 발생함) </li>
+<li>근데 그러면 원래라면 노드 전체 스콥에서는 다른 numa node에 공간이 있을 수 있으니 쓰로틀링 안날 수 있는걸 이 케이스엔 numa node로 묶어놔서 쓰로틀링이 더 발생할 수 있음 (감안하고 가야할지?)</li>
+</ul>
 <div class="footnote">
 <hr />
 <ol>
