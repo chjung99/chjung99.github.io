@@ -1653,6 +1653,8 @@
       
         
       
+        
+      
     
     
     
@@ -1708,6 +1710,33 @@
     
   
   Delve로 쿠버네티스 원격 디버깅하기
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../programming/Golang/Go%EC%96%B8%EC%96%B4%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%20-%20%ED%83%84%ED%83%84%ED%95%98%EA%B2%8C%20%EA%B8%B0%EC%B4%88%20%EB%AC%B8%EB%B2%95%20%EB%8B%A4%EC%A7%80%EA%B8%B0(1)/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Go언어 프로그래밍   탄탄하게 기초 문법 다지기(1)
 
     
   </span>
@@ -4481,6 +4510,17 @@ numasharedPolicy에서는 guaranteed 파드라도 배타적 할당은 되지 않
 <li>일단 Node 전체 사이즈 보고 들어오는 요청은 Numa node 걸치더라도 허용할 거니깐 admission 거부는 안만들어도 되고</li>
 <li>Burstable을 허용함에 따라 NumaNode 안에 평상시에는 다 같이 request 미만으로 쓰다가 갑자기 하나가 Numa Node 용량보다 크게 쓰는 경우에 어떻게 해야할지? 이 경우엔 eviction이 진행되고 removecontainer가 됨 (단 이는 Memory limit을 초과했을 때이지 cpu의 경우 추출되지 않고 쓰로틀링이 계속 발생함) </li>
 <li>근데 그러면 원래라면 노드 전체 스콥에서는 다른 numa node에 공간이 있을 수 있으니 쓰로틀링 안날 수 있는걸 이 케이스엔 numa node로 묶어놔서 쓰로틀링이 더 발생할 수 있음 (감안하고 가야할지?)</li>
+</ul>
+<p>allocateCPUs</p>
+<ul>
+<li>하나의 NUMA Node로 reuqest를 만족할 수 있을 떄 (단, 이미 할당되어 있는 NUMA Node request 계산해야함)</li>
+<li>여러 NUMA Node를 걸쳐야하는 경우 -&gt; 공유풀 취급</li>
+<li>공유 풀은 일단 NUMA Node랑 같이 방쓰다가 NUMA Node 꽉차면 방빼는 느낌</li>
+</ul>
+<p>NUMA 사용량에 대한 상태 기록 필수 -&gt; allocateCPUs 여기에 맞춰서 재작성</p>
+<ul>
+<li>기록이 있다 -&gt; NUMAShared Pool</li>
+<li>기록이 없다 -&gt; Shared Pool</li>
 </ul>
 <div class="footnote">
 <hr />
