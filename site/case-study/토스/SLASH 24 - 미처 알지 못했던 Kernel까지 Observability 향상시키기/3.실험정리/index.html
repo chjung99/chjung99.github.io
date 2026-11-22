@@ -1,0 +1,3135 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A new project generated from the default template project.">
+      
+      
+        <meta name="author" content="Chanho Jung">
+      
+      
+        <link rel="canonical" href="https://chjung99.github.io/case-study/%ED%86%A0%EC%8A%A4/SLASH%2024%20-%20%EB%AF%B8%EC%B2%98%20%EC%95%8C%EC%A7%80%20%EB%AA%BB%ED%96%88%EB%8D%98%20Kernel%EA%B9%8C%EC%A7%80%20Observability%20%ED%96%A5%EC%83%81%EC%8B%9C%ED%82%A4%EA%B8%B0/3.%EC%8B%A4%ED%97%98%EC%A0%95%EB%A6%AC/">
+      
+      
+        <link rel="prev" href="../2.%EC%83%81%EC%84%B8%EB%B6%84%EC%84%9D/">
+      
+      
+        <link rel="next" href="../../../../kubernetes/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.43">
+    
+    
+      
+        <title>3.실험정리 - Chanho's Wiki</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../../assets/stylesheets/modern/main.fba56155.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Chanho&#x27;s Wiki" class="md-header__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Chanho's Wiki
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3.실험정리
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Chanho&#x27;s Wiki" class="md-nav__button md-logo" aria-label="Chanho's Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+
+    </a>
+    Chanho's Wiki
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-rocket" viewBox="0 0 24 24"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></svg>
+  
+  <span class="md-ellipsis">
+    
+  
+  Chanho's Wiki
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Case study
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Case study
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  토스
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  토스
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_1" id="__nav_2_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0.발표내용
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1.%EA%B0%9C%EB%85%90%EC%A0%95%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1.개념정리
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2.%EC%83%81%EC%84%B8%EB%B6%84%EC%84%9D/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2.상세분석
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3.실험정리
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3.실험정리
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실험 개요
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        토스 인프라 구성
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpu-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        쿠버네티스에서 리소스(CPU, Memory) 할당 방법
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        문제 이해하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실험 설계
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="실험 설계">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        배경
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        원인 추정
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        기존 방안의 한계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        가설
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        검증 지표
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        시나리오
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        비교 대상
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        워크로드 구성
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        측정 지표
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실험 결과
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="실험 결과">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        요약
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정책 적용 확인
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vmstat-120-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        vmstat 구간 측정 (120초 × 3회)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        page fault 플레임그래프
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정규화한 비용
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        가설 검증
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        결론
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="결론">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        한계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../kubernetes/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Kubernetes
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Kubernetes
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Operations
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Operations
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/Operations/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%EC%97%90%EC%84%9C%20%EB%AC%B4%EC%A4%91%EB%8B%A8%20%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  쿠버네티스에서 무중단 배포하기
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  쿠버네티스 딥다이브
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  쿠버네티스 딥다이브
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/0.%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%EC%84%A4%EC%A0%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0. 개요 및 환경 설정
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/1.kubelet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. kubelet
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../kubernetes/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EB%94%A5%EB%8B%A4%EC%9D%B4%EB%B8%8C/2.kube-apiserver/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2. kube-apiserver
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../linux/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Linux
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Linux
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../../linux/container%20primitives/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Container primitives
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Container primitives
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/container%20primitives/1.Namespace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. Namespace
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Networking stack
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Networking stack
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/networking%20stack/L3.Netfilter%20And%20Iptables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  L3.Netfilter And Iptables
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  도커 없이 컨테이너 만들기
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  도커 없이 컨테이너 만들기
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/0.%20%EA%B0%9C%EC%9A%94%20%EB%B0%8F%20%ED%99%98%EA%B2%BD%20%EC%84%A4%EC%A0%95/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  0. 개요 및 환경 설정
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/1.chroot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  1. chroot
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/2.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  2. 컨테이너 파일시스템
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/3.overlayFS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  3. OverlayFS
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/4.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EA%B2%A9%EB%A6%AC/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  4. 컨테이너 격리
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/5.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EC%9E%90%EC%9B%90/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  5. 컨테이너 자원
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../linux/%EB%8F%84%EC%BB%A4%20%EC%97%86%EC%9D%B4%20%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/6.%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88%20%EB%A7%8C%EB%93%A4%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  6. 컨테이너 만들기
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Programming
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Programming
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_1" id="__nav_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Golang
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Golang
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../programming/Golang/Delve%EB%A1%9C%20%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4%20%EC%9B%90%EA%B2%A9%20%EB%94%94%EB%B2%84%EA%B9%85%ED%95%98%EA%B8%B0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Delve로 쿠버네티스 원격 디버깅하기
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../programming/Golang/Go%EC%96%B8%EC%96%B4%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%20-%20%ED%83%84%ED%83%84%ED%95%98%EA%B2%8C%20%EA%B8%B0%EC%B4%88%20%EB%AC%B8%EB%B2%95%20%EB%8B%A4%EC%A7%80%EA%B8%B0(1)/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Go언어 프로그래밍   탄탄하게 기초 문법 다지기(1)
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../programming/Golang/Go%EC%96%B8%EC%96%B4%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D%20-%20%ED%83%84%ED%83%84%ED%95%98%EA%B2%8C%20%EA%B8%B0%EC%B4%88%20%EB%AC%B8%EB%B2%95%20%EB%8B%A4%EC%A7%80%EA%B8%B0(2)/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Go언어 프로그래밍   탄탄하게 기초 문법 다지기(2)
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실험 개요
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        토스 인프라 구성
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cpu-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        쿠버네티스에서 리소스(CPU, Memory) 할당 방법
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        문제 이해하기
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실험 설계
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="실험 설계">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        배경
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        원인 추정
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        기존 방안의 한계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        가설
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        검증 지표
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        시나리오
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        비교 대상
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        워크로드 구성
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        측정 지표
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        실험 결과
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="실험 결과">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        요약
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정책 적용 확인
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vmstat-120-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        vmstat 구간 측정 (120초 × 3회)
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-fault" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        page fault 플레임그래프
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        정규화한 비용
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        가설 검증
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        결론
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="결론">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        한계
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Chanho's Wiki
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Case study
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    토스
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../0.%EB%B0%9C%ED%91%9C%EB%82%B4%EC%9A%A9/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    SLASH 24   미처 알지 못했던 Kernel까지 Observability 향상시키기
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <h1 id="__skip">3.실험정리</h1>
+
+<h2 id="_1">실험 개요<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>토스의 사례의 문제를 한줄로 정리하면 다음과 같이 작성할 수 있을 것 같습니다.</p>
+<blockquote>
+<p>CPU 사용률 중 가장 많은 부분을 차지하는 page fault에서 <code>do_numa_page</code> 동작 중 <code>migrate_misplaced_page</code> 수행 시간이 전체의 50% 이상을 차지한다</p>
+</blockquote>
+<p><code>migrate_misplaced_page</code>란 NUMA 아키텍처 시스템에서 동작하는 Auto NUMA Balancing에 의해 Remote Access가 발생하는 페이지를 Local Access 할 수 있도록 현재 프로세스가 동작하는 코어와 가까운 위치로 페이지를 이동시키는 것입니다.</p>
+<p>이렇게 한번 이동한 페이지를 코어에서 계속 쓴다면 아무 문제 없겠지만, 동작하는 코어가 움직인다면 계속 Remote Access가 발생할 수 밖에 없고, 위 사례처럼 <code>migrate_misplaced_page</code>가 많이 발생하게 되는 것입니다.</p>
+<h2 id="_2">토스 인프라 구성<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><img alt="3.1" src="../3.1.image.png" /></p>
+<p>토스 인프라 구성은 위와 같이 IDC 안에 Bare metal 서버들로 구성된 쿠버네티스 클러스터 형태에 가까울 것입니다. 정확한 개수까지는 알 수 없지만, 각 Bare metal 서버안에 2개의 소켓이 있다고 가정해보겠습니다.</p>
+<p>각 소켓에는 CPU 코어들과 Memroy가 있을 것이고, 서버에서 설치된 kubelet에 의해 Pod가 어떤 소켓의 어떤 CPU와 Memory를 배정받느냐가 결정됩니다.</p>
+<p>위 사례에서는 이 지점에서 바로 문제가 발생했습니다. Pod가 1번 소켓의 코어를 사용중인데, 2번 소켓의 메모리에 있는 페이지에 접근하여 1번 소켓의 메모리로 <code>migrate_misplaced_page</code>가 발생했습니다. 그것도 <code>do_numa_page</code> 동작 중 50% 이상을 차지할 정도로 말이죠.</p>
+<p>왜 이런 일이 발생할까요?</p>
+<h2 id="cpu-memory">쿠버네티스에서 리소스(CPU, Memory) 할당 방법<a class="headerlink" href="#cpu-memory" title="Permanent link">&para;</a></h2>
+<p>쿠버네티스에 애플리케이션 파드를 배포한다는 것은 크게 2가지 과정을 거쳐 진행됩니다.</p>
+<ol>
+<li>apiserver로 파드 요청서(필요한 cpu, memory 크기 등) 전달</li>
+<li>kubelet이 파드 요청서에 맞게 커널에 컨테이너 생성 요청</li>
+</ol>
+<p>kubelet이 컨테이너 생성 요청을 할 때 파드 요청서에 적힌 request 만큼 CPU, Memory를 설정하게 되는데,
+이때 하나의 Worker Node에서 어떤 코어, 메모리 조합으로 묶을 지는 kubelet의 CPU Manager/ Memory Manager 각 정책에 따라 결정됩니다.</p>
+<p><img alt="3.2" src="../3.2.image.png" /></p>
+<p>CPU Manager, Memory Manager에는 각각 None Policy, Static Policy 2개의 정책이 있습니다.</p>
+<p>먼저 CPU Manager 부터 살펴보겠습니다. </p>
+<p>기본 정책인 None Policy는 서버의 소켓 및 NUMA 아키텍처 고려 없이 배치됩니다. Cgroup을 통해 자원이 컨테이너 단위로 할당되는데요, None Policy에서는 어떤 코어를 사용해야한다는 제한도 하지 않기 때문에 cpuset.cpu 값이 설정되지 않게 되고, 이 값이 비어있으면 부모 그룹의 cpuset.cpus.effective 값을 상속받습니다.
+즉, None Policy에서는 어떤 코어에서 도는 지 제한 없이 하나의 쿠버네티스 노드 안에서 모든 코어를 사용할 수 있게 됩니다.</p>
+<p>Static Policy는 고정된 크기의 자원을 보장할 수 있도록 배치됩니다. 그렇기 때문에 CPU 코어 요청이 정수여야 하고, QoS가 Gauranteed(request == limit) 여야 합니다. Static Policy에서 들어오는 CPU 코어 요청은 cpuset.cpu 값이 설정됩니다.</p>
+<p>정리하면 CPU 요청은 아래와 같이 정리 됩니다. (cgroup v2 기준)</p>
+<ul>
+<li>어떤 코어에서 돌릴 지: cpuset.cpus</li>
+<li>경합 발생 시 몫: cpu.weight (단위 없는 상대값, 비율을 위한 숫자)</li>
+<li>경합과 상관 없이 최대 상한: cpu.max (마이크로초(µs) 단위의 시간)</li>
+</ul>
+<p>따라서 Static Policy에서는 Topology Manager 정책 등을 통해 결정된 CPU 코어로 사용이 고정됩니다.</p>
+<p>Memory Manager도 유사합니다.</p>
+<p>None Policy에서는 cpuset.mems 값이 설정되지 않아 Cgroup 상속으로 노드의 모든 NUMA에서 메모리를 할당받습니다. 커널이 알아서 고르니 보통 "프로세스가 도는 CPU와 가까운 NUMA" 정책을 따르지만, 보장은 없습니다.</p>
+<p>Static Policy에서는 Guaranteed 파드에 한해 NUMA를 정해서 cpuset.mems에 기록합니다. 그러면 그 컨테이너는 지정된 NUMA에서만 메모리를 받습니다.</p>
+<h2 id="_3">문제 이해하기<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>문제 상황을 아래와 같이 요약할 수 있습니다.</p>
+<blockquote>
+<p>쿠버네티스 기본 정책에서 컨테이너의 스레드는 노드의 모든 코어와 메모리를 사용할 수 있다. 커널 스케줄러는 부하에 따라 스레드를 다른 코어로 옮기고, 그 코어가 다른 NUMA 노드에 속하면 기존에 할당된 메모리는 원격 접근이 된다. 커널의 Auto NUMA Balancing은 이를 감지해 페이지를 옮기지만(migrate_misplaced_page), 이 과정 자체가 추가 비용이다.</p>
+</blockquote>
+<p>JVM 기반 애플리케이션을 예로 들면, 리눅스의 First-Touch 정책은 JVM 힙에도 그대로 적용됩니다. 힙 영역은 기동 시 가상 주소 공간으로 예약될 뿐이고, 실제 물리 페이지는 그 영역을 처음 건드린 스레드가 속한 NUMA 노드에 배치됩니다.</p>
+<p>따라서 힙의 물리적 분포는 "누가 언제 먼저 터치했는가"에 달려있습니다. -XX:+AlwaysPreTouch로 기동 시 힙 전체를 미리 터치하면 그 시점의 스레드 위치에 몰리고, 기본값에서는 런타임에 여러 워커 스레드가 할당하면서 여러 NUMA에 흩어지게 됩니다.</p>
+<p>어느 경우든 힙의 물리적 위치와 그 힙을 읽는 스레드의 위치가 일치한다는 보장이 없고, 특히 힙 전체를 훑는 GC는 원격 접근을 피하기 어렵습니다. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<h2 id="_4">실험 설계<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="_5">배경<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>토스 사례에서는 CPU 사용률의 상당 부분을 page fault가 차지했고, 그중 <code>do_numa_page</code> 처리 과정에서 <code>migrate_misplaced_page</code>가 절반가량을 점유했습니다.</p>
+<h3 id="_6">원인 추정<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>쿠버네티스의 기본 정책(None)에서는 컨테이너의 스레드가 노드의 모든 코어를 사용할 수 있고, 커널 스케줄러가 부하 분산 과정에서 다른 NUMA 노드의 코어로 옮깁니다. 이때 기존에 할당된 메모리는 원격 접근이 되고, Auto NUMA Balancing이 이를 감지해 페이지 마이그레이션을 수행합니다.</p>
+<h3 id="_7">기존 방안의 한계<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>Static Policy를 쓰면 CPU와 메모리를 NUMA에 고정할 수 있지만, 대상이 Guaranteed QoS 파드로 제한됩니다. CPU request가 정수여야 한다는 제약도 있어, Burstable 파드가 다수인 환경에서는 적용 범위가 좁습니다.</p>
+<h3 id="_8">가설<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<p>파드 단위로 CPU와 메모리를 같은 NUMA 노드에 배치하는 커스텀 정책(NumaShared)을 적용하면, Burstable 파드를 포함한 전체 워크로드에서 원격 메모리 접근과 그에 따른 페이지 마이그레이션이 감소할 것입니다.</p>
+<p>이 가설은 세 부분으로 나누어 검증했습니다. 첫째, 원격 접근과 마이그레이션이 감소합니다. 둘째, CPU와 메모리가 같은 NUMA 노드를 가리킵니다. 셋째, Burstable 파드를 포함한 전체 워크로드에 적용됩니다. 각 부분의 판정은 실험 결과의 가설 검증에 정리했습니다.</p>
+<h3 id="_9">검증 지표<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>/proc/vmstat</code>의 <code>numa_hint_faults</code>, <code>numa_hint_faults_local</code>(remote 비율 산출), <code>numa_pages_migrated</code>, <code>numa_pte_updates</code>(스캐너 활성 여부)</li>
+<li><code>numastat -p &lt;pid&gt;</code>의 노드별 메모리 분포(Private, MB)</li>
+<li>컨테이너의 <code>cpuset.cpus.effective</code>, <code>cpuset.mems.effective</code>가 같은 NUMA를 가리키는지</li>
+<li>page fault 플레임그래프에서 <code>do_numa_page</code>, <code>migrate_misplaced_page</code>가 차지하는 비중</li>
+</ul>
+<h3 id="_10">시나리오<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>단일 워커 노드(<code>k8s-worker1-001</code>)에서 같은 파드 구성을 두고 kubelet 정책만 바꿔 두 번 측정했습니다. 조건마다 절차는 같습니다.</p>
+<ol>
+<li>kubelet 정책을 적용합니다. 설정을 교체하고 정책 state 파일을 삭제한 뒤 kubelet을 재시작합니다.</li>
+<li>파드를 전부 삭제하고 측정 대상과 경합 파드를 다시 배포합니다.</li>
+<li>배치 증거를 수집합니다. cpuset과 mems, <code>cpu.max</code>, state 파일, 스레드별 실행 CPU, 메모리 노드 분포를 기록합니다.</li>
+<li>5분간 워밍업합니다. AutoNUMA 스캐너가 정상 상태에 들어가기를 기다리기 위해서입니다.</li>
+<li>vmstat 구간 측정을 120초씩 3회 합니다. 회차 사이에 60초를 두고 numastat을 함께 기록합니다.</li>
+<li>ebpf-exporter를 중지하고 page fault 플레임그래프를 120초간 캡처한 뒤 exporter를 다시 켭니다.</li>
+</ol>
+<p>경합 파드를 함께 둔 이유는 다음과 같습니다. 워킹셋이 NUMA 노드 하나에 들어가고 CPU가 한가하면 기본 스케줄링만으로도 배치가 이미 좋아져 정책이 개선할 여지가 없습니다(초기 실측에서 remote가 거의 없었습니다). 토스의 문제는 노드에 파드가 많고 CPU 압력이 있어 스케줄러가 스레드를 계속 옮기는 상황에서 발생하므로, 경합 파드로 그 압력을 만들었습니다.</p>
+<p>측정 전에 판정 기준을 미리 정했습니다. policy의 remote는 2% 미만, migration은 100/s 미만이어야 하고, 메모리가 한 노드에 집중되어야 하며, <code>numa_pte_updates</code>가 0이 아니어야 합니다.</p>
+<h3 id="_11">비교 대상<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>구분</th>
+<th>CPU Manager</th>
+<th>Memory Manager</th>
+<th>Topology Manager</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A. baseline</td>
+<td><code>none</code></td>
+<td><code>None</code></td>
+<td>기본</td>
+<td>대조군</td>
+</tr>
+<tr>
+<td>B. NumaShared</td>
+<td><code>numa-shared</code>(커스텀)</td>
+<td><code>NumaShared</code>(커스텀)</td>
+<td><code>best-effort</code>, <code>pod</code> 스코프</td>
+<td>실험군</td>
+</tr>
+</tbody>
+</table>
+<p>두 조건은 같은 날 같은 부팅 세션에서 측정했습니다. kubelet 바이너리(크기 150,984,737 bytes, sha256 <code>eb8969aae6c3af13</code>), 파드 스펙, <code>cpu.max</code>, <code>cpu.weight</code>는 동일하게 유지했습니다.</p>
+<p>정책 B는 다음과 같이 동작합니다. CPU는 파드에 배타 코어를 주지 않고 한 NUMA 노드의 CPU 범위 전체를 cpuset으로 배정합니다. 버스트 여력은 그대로 유지되고, QoS 제한은 두지 않으며(BestEffort 제외) 소수점 요청은 올림합니다. 노드는 부하(<code>numaLoad</code>)와 용량으로 고릅니다. 메모리는 파드의 메모리를 한 NUMA 노드에 고정하고(<code>cpuset.mems</code>), 어느 노드에도 들어가지 않으면 고정하지 않고 폴백합니다. 메모리 정책은 pod 스코프에서만 힌트를 내므로 <code>topologyManagerScope: pod</code>가 필요합니다. container 스코프에서는 CPU와 메모리가 서로 다른 노드로 갈 수 있습니다.</p>
+<h3 id="_12">워크로드 구성<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>환경은 다음과 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>호스트</td>
+<td>i7-10700 (싱글 소켓, 물리 NUMA 노드 1개)</td>
+</tr>
+<tr>
+<td>측정 노드</td>
+<td><code>k8s-worker1-001</code> (VM, 6 vCPU, QEMU/libvirt vNUMA 2개)</td>
+</tr>
+<tr>
+<td>vNUMA 토폴로지</td>
+<td>node0: CPU 0-2, 2,910MB / node1: CPU 3-5, 3,022MB</td>
+</tr>
+<tr>
+<td>소프트웨어</td>
+<td>Ubuntu 22.04, 커널 5.15.0-198, Kubernetes v1.30.14, containerd 2.2.1</td>
+</tr>
+<tr>
+<td>설정</td>
+<td><code>numa_balancing=1</code>(기본), systemReserved와 kubeReserved 각 cpu 500m·mem 500Mi, reservedMemory 노드당 550Mi</td>
+</tr>
+</tbody>
+</table>
+<p>측정 대상은 <code>numa-baseline</code>(<code>numa-touch</code>)입니다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>동작</td>
+<td>스레드 3개가 1600MB 버퍼 하나를 공유하며 페이지마다 1바이트씩 증가시키는 순회를 무한 반복</td>
+</tr>
+<tr>
+<td>메모리</td>
+<td><code>MAP_PRIVATE \| MAP_ANONYMOUS \| MAP_POPULATE</code> (AutoNUMA 대상, 신규 할당 폴트 제거)</td>
+</tr>
+<tr>
+<td>affinity</td>
+<td>워크로드가 스스로 조작하지 않음 (배치는 kubelet과 스케줄러가 결정)</td>
+</tr>
+<tr>
+<td>QoS와 자원</td>
+<td>Guaranteed, <code>cpu: 2</code>, <code>memory: 2000Mi</code> (<code>cpu.max</code> = <code>200000 100000</code>)</td>
+</tr>
+<tr>
+<td>배포</td>
+<td>worker1에서 정적 빌드한 바이너리를 hostPath로 마운트 (<code>busybox:1.36</code> 이미지 사용)</td>
+</tr>
+</tbody>
+</table>
+<p>경합 파드는 <code>noisy-neighbor</code>입니다.</p>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>동작</td>
+<td><code>stress-ng --cpu 6</code> (CPU만 사용. <code>--vm</code>은 공유 매핑 문제가 있어 쓰지 않음)</td>
+</tr>
+<tr>
+<td>QoS와 자원</td>
+<td>Burstable, request cpu 1·mem 256Mi, limit cpu 6·mem 512Mi</td>
+</tr>
+</tbody>
+</table>
+<p>스레드 수를 CPU 요청(2)보다 많은 3개로 둔 이유는, 정책이 없을 때 6개 코어 전체에 흩어지고 정책이 있을 때 한 노드에 갇히는 대비를 선명하게 하기 위해서입니다. 워크로드의 크기는 NUMA 노드 하나(CPU 3개, 약 2.9GB)에 들어가게 잡아 모든 정책을 같은 스펙으로 비교할 수 있게 했습니다. 버퍼를 스레드가 공유하게 한 이유도 있습니다. 프로세스마다 버퍼를 따로 두면 커널이 스스로 노드를 나누어 배치해 개선 여지가 없었고(실측 remote 13%), <code>stress-ng --vm</code>은 버퍼가 <code>MAP_SHARED</code>라 마이그레이션이 억제되었습니다.</p>
+<h3 id="_13">측정 지표<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>산출 방법</th>
+<th>용도</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>remote 비율</td>
+<td>120초 전후 <code>/proc/vmstat</code> 차분. <code>(Δnuma_hint_faults − Δnuma_hint_faults_local) ÷ Δnuma_hint_faults</code></td>
+<td>원격 접근의 정량 지표. 토스의 local 6000 : remote 4000과 같은 종류이며, 노드 전체 카운터라 다른 프로세스가 섞입니다</td>
+</tr>
+<tr>
+<td>migration 속도</td>
+<td><code>Δnuma_pages_migrated ÷ 120초</code></td>
+<td>페이지 마이그레이션 양</td>
+</tr>
+<tr>
+<td>hint fault 속도</td>
+<td><code>Δnuma_hint_faults ÷ 120초</code></td>
+<td>AutoNUMA 스캔·처리 양</td>
+</tr>
+<tr>
+<td><code>numa_pte_updates</code></td>
+<td>구간 차분</td>
+<td>스캐너가 활발했는지 확인 (0이면 hint fault가 잔재라 해석할 수 없음)</td>
+</tr>
+<tr>
+<td>메모리 노드 분포</td>
+<td><code>numastat -p &lt;pid&gt;</code>의 Private(MB), cgroup <code>memory.numa_stat</code></td>
+<td>메모리가 어느 노드에 놓였는지</td>
+</tr>
+<tr>
+<td>배치 증거</td>
+<td><code>cpuset.cpus/mems</code>(와 <code>.effective</code>), <code>Cpus_allowed_list</code>, <code>Mems_allowed_list</code>, 스레드별 PSR, kubelet state 파일</td>
+<td>정책이 의도대로 걸렸는지</td>
+</tr>
+<tr>
+<td>page fault 플레임그래프</td>
+<td><code>perf record -F 99 -a -g --call-graph dwarf -e cycles</code> 120초, page fault 스택만 추출</td>
+<td>NUMA 처리 비용의 구조와 비중</td>
+</tr>
+<tr>
+<td>정규화 비용</td>
+<td><code>numa-touch</code> 자신의 전체 사이클 대비 page fault, NUMA, migration 포함 사이클</td>
+<td>경합 파드의 사이클을 뺀 비교</td>
+</tr>
+<tr>
+<td>throttle</td>
+<td>cgroup <code>cpu.stat</code>의 <code>nr_throttled ÷ nr_periods</code></td>
+<td>CPU 상한에 걸린 정도 (교란 변수 기록)</td>
+</tr>
+</tbody>
+</table>
+<p>플레임그래프는 cycles 기준으로 캡처했습니다. <code>-e page-faults</code>로 재면 폴트 횟수의 비중이 나와 migration의 비싼 비용이 반영되지 않기 때문입니다. 캡처 때는 <code>ebpf_exporter</code>의 kprobe 오버헤드가 비율을 크게 부풀리므로 반드시 중지했습니다. vmstat 지표는 커널 카운터라 exporter의 영향을 받지 않습니다.</p>
+<h2 id="_14">실험 결과<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<h3 id="_15">요약<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p><strong>page migration이 기존 대비 약 99.7% 감소했습니다.(3,506~5,146/s -&gt; 12~18/s)</strong></p>
+<p><img alt="3.3" src="../3.3.image.png" /></p>
+<h3 id="_16">정책 적용 확인<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>A. baseline</th>
+<th>B. NumaShared</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cpuset.cpus</code> (effective)</td>
+<td>비어 있음 (<code>0-5</code>)</td>
+<td><code>3-5</code></td>
+</tr>
+<tr>
+<td><code>cpuset.mems</code> (effective)</td>
+<td>비어 있음 (<code>0-1</code>)</td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><code>Cpus_allowed_list</code> / <code>Mems_allowed_list</code></td>
+<td><code>0-5</code> / <code>0-1</code></td>
+<td><code>3-5</code> / <code>1</code></td>
+</tr>
+<tr>
+<td>스레드 PSR</td>
+<td>2, 4, 2, 5 (양쪽 노드에 분산)</td>
+<td>3, 5, 4, 3 (node1에만 위치)</td>
+</tr>
+<tr>
+<td>메모리 <code>anon</code> (node0 / node1)</td>
+<td>364MB / 1,236MB</td>
+<td>4KB / 1,600MB</td>
+</tr>
+<tr>
+<td>kubelet state</td>
+<td><code>policyName: none</code> / <code>None</code></td>
+<td><code>numaEntries</code>상 numa-touch가 node1(2000m), 메모리 state도 node1</td>
+</tr>
+<tr>
+<td><code>cpu.max</code> / <code>cpu.weight</code></td>
+<td><code>200000 100000</code> / 174</td>
+<td>동일</td>
+</tr>
+<tr>
+<td>noisy-neighbor 배치</td>
+<td>같은 6코어를 공유</td>
+<td>node0(<code>1-2</code>)로 분리</td>
+</tr>
+</tbody>
+</table>
+<p>B에서는 CPU와 메모리가 같은 NUMA 노드(node1)를 가리키는 것을 확인했습니다.</p>
+<h3 id="vmstat-120-3">vmstat 구간 측정 (120초 × 3회)<a class="headerlink" href="#vmstat-120-3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>조건</th>
+<th>회차</th>
+<th>remote</th>
+<th>migration</th>
+<th>hint fault</th>
+<th><code>numa_pte_updates</code></th>
+<th>메모리 (node0 / node1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A. baseline</td>
+<td>1</td>
+<td>35.8%</td>
+<td>4,472/s</td>
+<td>28,797/s</td>
+<td>3,356,283</td>
+<td>464 / 1,137 MB</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>35.0%</td>
+<td>3,506/s</td>
+<td>22,977/s</td>
+<td>2,680,518</td>
+<td>521 / 1,080 MB</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>41.4%</td>
+<td>5,146/s</td>
+<td>34,228/s</td>
+<td>3,995,117</td>
+<td>1,127 / 474 MB</td>
+</tr>
+<tr>
+<td></td>
+<td>중앙값</td>
+<td>35.8%</td>
+<td>4,472/s</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>B. NumaShared</td>
+<td>1</td>
+<td>0.3%</td>
+<td>15/s</td>
+<td>4,529/s</td>
+<td>540,676</td>
+<td>0.00 / 1,600.86 MB</td>
+</tr>
+<tr>
+<td></td>
+<td>2</td>
+<td>0.7%</td>
+<td>18/s</td>
+<td>4,628/s</td>
+<td>556,288</td>
+<td>0.00 / 1,600.86 MB</td>
+</tr>
+<tr>
+<td></td>
+<td>3</td>
+<td>0.5%</td>
+<td>12/s</td>
+<td>4,571/s</td>
+<td>548,726</td>
+<td>0.00 / 1,600.86 MB</td>
+</tr>
+<tr>
+<td></td>
+<td>중앙값</td>
+<td>0.5%</td>
+<td>15/s</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>A. baseline</th>
+<th>B. NumaShared</th>
+<th>변화</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>remote 비율</td>
+<td>35.0~41.4%</td>
+<td>0.3~0.7%</td>
+<td>범위가 겹치지 않음</td>
+</tr>
+<tr>
+<td>migration</td>
+<td>3,506~5,146/s</td>
+<td>12~18/s</td>
+<td>약 99.7% 감소</td>
+</tr>
+<tr>
+<td>hint fault</td>
+<td>22,977~34,228/s</td>
+<td>4,529~4,628/s</td>
+<td>약 84% 감소</td>
+</tr>
+</tbody>
+</table>
+<p>세 회차 모두 <code>numa_pte_updates</code>가 수십만에서 수백만이어서 스캐너가 활발한 구간에서 잰 유효한 값입니다. B에서 hint fault가 줄어든 것은 접근이 전부 local이면 AutoNUMA가 스캔 주기를 늘리기 때문입니다.</p>
+<p>A에서는 회차마다 메모리의 다수 노드가 node1에서 node0으로 뒤집혔습니다(1,137MB에서 1,127MB로). 스레드가 양쪽 노드에서 같은 페이지를 접근해 페이지가 노드 사이를 오가는 현상이 나타난 것입니다. B에서는 세 회차 모두 분포가 같았습니다. 다만 노드별 분포의 시계열은 측정하지 않아 스냅샷 4개만 있습니다.</p>
+<h3 id="page-fault">page fault 플레임그래프<a class="headerlink" href="#page-fault" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>지표</th>
+<th>A. baseline</th>
+<th>B. NumaShared</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>page fault 스택 / 샘플</td>
+<td>128줄 / 70,743</td>
+<td>20줄 / 51,855</td>
+</tr>
+<tr>
+<td>page fault 전체 사이클</td>
+<td>21,588,553,942</td>
+<td>2,287,487,501 (89.4% 감소)</td>
+</tr>
+<tr>
+<td>그 중 NUMA(<code>do_numa_page</code> 포함)</td>
+<td>10,886,899,302</td>
+<td>382,515,602 (96.5% 감소)</td>
+</tr>
+<tr>
+<td>NUMA 비중</td>
+<td>50.4%</td>
+<td>16.7%</td>
+</tr>
+<tr>
+<td>캡처 구간 remote</td>
+<td>42.0%</td>
+<td>0.4%</td>
+</tr>
+<tr>
+<td>캡처 구간 migration</td>
+<td>723,782건</td>
+<td>295건 (99.96% 감소)</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="3.4" src="../3.4.numa-baseline.svg" /></p>
+<p>A의 비용 구성은 다음과 같습니다(page fault 전체 대비).</p>
+<table>
+<thead>
+<tr>
+<th>프레임</th>
+<th>비중</th>
+<th><code>do_numa_page</code> 내 비중</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>migrate_misplaced_page</code></td>
+<td>25.7%</td>
+<td>약 51%</td>
+</tr>
+<tr>
+<td><code>try_to_migrate</code>(rmap walk)</td>
+<td>5.7%</td>
+<td></td>
+</tr>
+<tr>
+<td><code>copy_page</code></td>
+<td>4.2%</td>
+<td></td>
+</tr>
+<tr>
+<td><code>ptep_clear_flush</code>(TLB flush)</td>
+<td>2.3%</td>
+<td></td>
+</tr>
+<tr>
+<td>스핀락(<code>_raw_spin_lock</code>)</td>
+<td>11.8%</td>
+<td>약 23%</td>
+</tr>
+<tr>
+<td><code>numa_migrate_prep</code></td>
+<td>4.2%</td>
+<td>약 8%</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="3.5" src="../3.5.numa-numa-policy.svg" /></p>
+<p>B의 그래프에는 <code>migrate_misplaced_page</code>, <code>migrate_pages</code>, <code>copy_page</code>, <code>try_to_migrate</code>, <code>rmap_walk</code>, <code>flush_tlb</code> 계열 프레임이 하나도 없습니다. 남은 <code>do_numa_page</code>(3.8억 사이클)의 약 46%는 스핀락, 즉 페이지 테이블 락 경합입니다. 남은 NUMA 비용은 페이지 이동이 아니라 local hint fault 처리와 락 경합입니다.</p>
+<h3 id="_17">정규화한 비용<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h3>
+<p><code>numa-touch</code> 자신의 전체 사이클 대비 비중입니다. 경합 파드의 사이클은 뺐습니다.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>A. baseline</th>
+<th>B. NumaShared</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>numa-touch 전체 사이클</td>
+<td>1.0976 × 10¹²</td>
+<td>1.0937 × 10¹² (0.4% 감소)</td>
+</tr>
+<tr>
+<td>page fault</td>
+<td>2.0%</td>
+<td>0.2%</td>
+</tr>
+<tr>
+<td>NUMA(<code>do_numa_page</code> 포함)</td>
+<td>1.0%</td>
+<td>약 0.035%</td>
+</tr>
+<tr>
+<td>그 중 <code>migrate_misplaced_page</code> 포함</td>
+<td>0.5%</td>
+<td>0.0%</td>
+</tr>
+</tbody>
+</table>
+<p>워크로드의 CPU 사용이 <code>cpu.max</code>(2코어 분량)에 묶여 있어, 시간으로 환산하면 상한 기준으로 NUMA는 약 20ms/s, migration은 약 10ms/s입니다(2코어 × 1000ms × 비중으로 잡은 추정). 토스가 보고한 "numa migration에 1초당 10~50ms"와 같은 범위입니다.</p>
+<h3 id="_18">가설 검증<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>가설의 내용</th>
+<th>판정</th>
+<th>근거</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>원격 접근과 마이그레이션이 감소한다</td>
+<td>지지</td>
+<td>remote 35.0~41.4%에서 0.3~0.7%로, migration 약 99.7% 감소. 범위가 겹치지 않고 플레임그래프에서 migration 서브트리가 사라졌습니다</td>
+</tr>
+<tr>
+<td>CPU와 메모리가 같은 NUMA를 가리킨다</td>
+<td>지지</td>
+<td><code>cpuset.cpus.effective</code>는 <code>3-5</code>, <code>cpuset.mems.effective</code>는 <code>1</code>이고, 스레드 PSR이 전부 node1이며 메모리 1,600MB가 전량 node1에 있습니다</td>
+</tr>
+<tr>
+<td>Burstable을 포함한 전체 워크로드에 적용된다</td>
+<td>부분 확인</td>
+<td>아래 설명 참조</td>
+</tr>
+</tbody>
+</table>
+<p>이번에 측정한 대상(<code>numa-baseline</code>)은 Guaranteed입니다. 정책이 Burstable에도 적용된다는 증거는 kubelet state뿐입니다. Burstable인 <code>noisy-neighbor</code>(cpu-burner)와 <code>kube-flannel</code>이 NUMA 범위 cpuset(<code>1-2</code>)과 메모리 블록을 배정받았습니다. 그러나 Burstable 워크로드의 remote와 migration은 측정하지 않았으므로, 성능 측면에서는 확인하지 못했습니다.</p>
+<h2 id="_19">결론<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h2>
+<ol>
+<li>정책의 효과인 원격 접근과 마이그레이션의 감소는 일관되게 확인되었습니다. remote 비율은 35~41%에서 0.3~0.7%로, migration은 초당 약 4,500건에서 15건으로 줄었고 두 조건의 범위가 겹치지 않습니다. 메모리는 한 노드에 고정되었고, 플레임그래프에서 <code>migrate_misplaced_page</code> 서브트리가 사라졌습니다.</li>
+<li>CPU와 메모리가 같은 NUMA 노드로 정렬되었습니다. <code>topologyManagerScope: pod</code>가 이 정렬의 전제 조건입니다.</li>
+<li>NUMA 비용의 규모는 토스와 같은 범위였습니다. page fault 중 NUMA 비중은 50.4%("절반가량")이고, migration을 환산하면 초당 약 10ms(토스 10~50ms)입니다. 다만 page fault 자체가 이 워크로드 전체 CPU의 2%이고 NUMA 비용은 약 1%이므로, 정책이 줄인 CPU 비용도 약 1%포인트 수준입니다.</li>
+<li>Burstable로의 확장은 이번 실험으로 입증하지 못했습니다. 적용 범위는 확인했지만 성능은 측정하지 않았습니다.</li>
+</ol>
+<h3 id="_20">한계<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>처리량 미측정</td>
+<td>처리량이 올라간다고 주장할 수 없습니다. 이론상 상한도 1~2% 수준입니다</td>
+</tr>
+<tr>
+<td>토스의 클러스터 CPU 13% 개선</td>
+<td>재현할 수 없습니다. 이 워크로드의 page fault 비중이 2%라 규모가 다릅니다</td>
+</tr>
+<tr>
+<td>vNUMA</td>
+<td>호스트가 싱글 소켓이라 원격 접근 지연이 없습니다. 커널의 NUMA 로직과 오버헤드(migration, 락, TLB)는 실제로 동작하지만, 지연으로 인한 성능 저하와 개선은 측정할 수 없습니다</td>
+</tr>
+<tr>
+<td>경합 파드 분리</td>
+<td>B에서 noisy-neighbor가 node0으로 분리되었습니다. 개선에 NUMA 정렬과 경합 파드 분리가 섞여 있어 기여를 나누지 못했고, 경합 파드를 빼고 재는 조건도 없습니다</td>
+</tr>
+<tr>
+<td>표본</td>
+<td>조건당 3회라 통계 검정은 하지 못하고 범위로만 보고합니다. baseline을 먼저, 정책을 나중에 재서 순서 효과를 분리하지 못했습니다</td>
+</tr>
+<tr>
+<td>CPU throttle</td>
+<td>두 조건 모두 거의 모든 주기에서 걸렸습니다(A 97.8%, B 99.9%). 공통 변수라 비교는 공정하지만 락 경합 비중이 인위적으로 높아졌을 수 있습니다</td>
+</tr>
+<tr>
+<td>캡처 방식 차이</td>
+<td>A는 burst 순간(초당 101,406 hint fault)에, B는 평상 상태에서 캡처를 시작했습니다. 구간 내 절대 횟수는 vmstat 3회로 비교했습니다</td>
+</tr>
+<tr>
+<td>스택 끊김</td>
+<td>하위 프레임이 끊긴 샘플이 A 약 18.7%, B 약 37.4%입니다. 분모에 섞여 B의 비율(16.7%)이 낮게 나올 수 있어 numa-touch 전체 대비 값을 더 신뢰합니다. B는 스택이 20줄뿐이라 비율이 불안정합니다</td>
+</tr>
+<tr>
+<td>카운터 범위</td>
+<td><code>/proc/vmstat</code>은 노드 전체 카운터라 다른 프로세스의 몫(남은 remote 0.3~0.7%)이 섞입니다</td>
+</tr>
+<tr>
+<td>워크로드</td>
+<td>합성 워크로드 하나이고 접근 패턴이 단순해 다른 워크로드로 일반화할 수 없습니다</td>
+</tr>
+</tbody>
+</table>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="https://kjhoon0330.tistory.com/entry/NUMA와-JVM과-k8s">https://kjhoon0330.tistory.com/entry/NUMA와-JVM과-k8s</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../2.%EC%83%81%EC%84%B8%EB%B6%84%EC%84%9D/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 2.상세분석">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                2.상세분석
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../../../kubernetes/" class="md-footer__link md-footer__link--next" aria-label="Next: ☸️ Kubernetes">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                ☸️ Kubernetes
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 Chanho Jung
+
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../../..","features":["announce.dismiss","content.code.annotate","content.code.copy","content.code.select","content.footnote.tooltips","content.tabs.link","content.tooltips","navigation.footer","navigation.indexes","navigation.instant","navigation.instant.prefetch","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../../../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      
+    
+  </body>
+</html>
