@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 670" width="1000" height="670" font-family="Apple SD Gothic Neo, Noto Sans KR, Malgun Gothic, sans-serif" font-size="12">
+  <defs>
+    <marker id="aG" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a9d8f"/></marker>
+    <marker id="aR" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d62828"/></marker>
+    <marker id="aRs" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="1" refY="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d62828"/></marker>
+    <marker id="aK" markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker>
+  </defs>
+  <rect width="1000" height="670" fill="#ffffff"/>
+  <text x="500" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#222">numa-touch 구조와 정책에 따른 스레드·메모리 배치 비교</text>
+
+  <!-- 상단: 프로세스 구조 -->
+  <rect x="20" y="44" width="960" height="124" rx="8" fill="#fafafa" stroke="#c8ced6"/>
+  <text x="36" y="66" font-weight="700" fill="#333">numa-touch 프로세스 (Pod 1개, 스레드 4개, 인자 1600 3 0)</text>
+
+  <rect x="40" y="80" width="190" height="66" rx="6" fill="#eef0f3" stroke="#8a94a0"/>
+  <text x="135" y="98" text-anchor="middle" font-weight="700">main 스레드</text>
+  <text x="135" y="114" text-anchor="middle" font-size="11" fill="#444">mmap으로 버퍼 확보</text>
+  <text x="135" y="128" text-anchor="middle" font-size="11" fill="#444">worker 3개 생성 후</text>
+  <text x="135" y="142" text-anchor="middle" font-size="11" fill="#444">pthread_join에서 대기</text>
+
+  <line x1="230" y1="113" x2="288" y2="113" stroke="#555" stroke-width="1.5" marker-end="url(#aK)"/>
+  <text x="259" y="105" text-anchor="middle" font-size="10" fill="#555">create</text>
+
+  <rect x="290" y="80" width="190" height="66" rx="6" fill="#fde7c7" stroke="#d9822b"/>
+  <text x="385" y="100" text-anchor="middle" font-weight="700">worker 0</text>
+  <text x="385" y="118" text-anchor="middle" font-size="11" fill="#444">시작 지점 0/8</text>
+  <text x="385" y="134" text-anchor="middle" font-size="11" fill="#444">g_buf[p]++ 반복 순회</text>
+
+  <rect x="500" y="80" width="190" height="66" rx="6" fill="#fde7c7" stroke="#d9822b"/>
+  <text x="595" y="100" text-anchor="middle" font-weight="700">worker 1</text>
+  <text x="595" y="118" text-anchor="middle" font-size="11" fill="#444">시작 지점 1/8</text>
+  <text x="595" y="134" text-anchor="middle" font-size="11" fill="#444">g_buf[p]++ 반복 순회</text>
+
+  <rect x="710" y="80" width="190" height="66" rx="6" fill="#fde7c7" stroke="#d9822b"/>
+  <text x="805" y="100" text-anchor="middle" font-weight="700">worker 2</text>
+  <text x="805" y="118" text-anchor="middle" font-size="11" fill="#444">시작 지점 2/8</text>
+  <text x="805" y="134" text-anchor="middle" font-size="11" fill="#444">g_buf[p]++ 반복 순회</text>
+
+  <line x1="385" y1="146" x2="385" y2="192" stroke="#d9822b" stroke-width="1.5" marker-end="url(#aK)"/>
+  <line x1="595" y1="146" x2="595" y2="192" stroke="#d9822b" stroke-width="1.5" marker-end="url(#aK)"/>
+  <line x1="805" y1="146" x2="805" y2="192" stroke="#d9822b" stroke-width="1.5" marker-end="url(#aK)"/>
+
+  <rect x="40" y="194" width="920" height="46" rx="6" fill="#d8f0ec" stroke="#2a9d8f"/>
+  <text x="500" y="214" text-anchor="middle" font-weight="700">공유 버퍼 1600MB (MAP_PRIVATE | MAP_ANONYMOUS | MAP_POPULATE)</text>
+  <text x="500" y="231" text-anchor="middle" font-size="11" fill="#333">세 worker가 같은 페이지를 모두 접근하므로 페이지가 있어야 할 올바른 노드가 정해지지 않음</text>
+
+  <!-- A: baseline -->
+  <rect x="20" y="258" width="470" height="372" rx="8" fill="#ffffff" stroke="#c8ced6"/>
+  <text x="36" y="282" font-size="14" font-weight="700" fill="#222">A. baseline (정책 없음)</text>
+  <text x="36" y="302" font-size="11" fill="#555">cpuset 제한 없음(0-5): 스케줄러가 스레드를 양쪽 노드로 흩어 놓음</text>
+
+  <rect x="40" y="318" width="205" height="214" rx="6" fill="#f4f6f8" stroke="#8a94a0"/>
+  <text x="142" y="338" text-anchor="middle" font-weight="700">NUMA node0 (CPU 0-2)</text>
+  <rect x="265" y="318" width="205" height="214" rx="6" fill="#f4f6f8" stroke="#8a94a0"/>
+  <text x="367" y="338" text-anchor="middle" font-weight="700">NUMA node1 (CPU 3-5)</text>
+
+  <rect x="55" y="352" width="175" height="32" rx="5" fill="#fde7c7" stroke="#d9822b"/>
+  <text x="142" y="372" text-anchor="middle" font-size="11">worker (CPU 2)</text>
+  <rect x="280" y="352" width="175" height="32" rx="5" fill="#fde7c7" stroke="#d9822b"/>
+  <text x="367" y="372" text-anchor="middle" font-size="11">worker (CPU 4)</text>
+  <rect x="280" y="392" width="175" height="32" rx="5" fill="#fde7c7" stroke="#d9822b"/>
+  <text x="367" y="412" text-anchor="middle" font-size="11">worker (CPU 5)</text>
+
+  <rect x="55" y="456" width="175" height="62" rx="5" fill="#d8f0ec" stroke="#2a9d8f"/>
+  <text x="142" y="480" text-anchor="middle" font-size="11">버퍼 일부</text>
+  <text x="142" y="497" text-anchor="middle" font-size="11" fill="#444">시간에 따라 0.4~1.1GB</text>
+  <rect x="280" y="456" width="175" height="62" rx="5" fill="#d8f0ec" stroke="#2a9d8f"/>
+  <text x="367" y="480" text-anchor="middle" font-size="11">버퍼 일부</text>
+  <text x="367" y="497" text-anchor="middle" font-size="11" fill="#444">시간에 따라 0.5~1.2GB</text>
+
+  <line x1="142" y1="384" x2="142" y2="454" stroke="#2a9d8f" stroke-width="1.8" marker-end="url(#aG)"/>
+  <line x1="367" y1="424" x2="367" y2="454" stroke="#2a9d8f" stroke-width="1.8" marker-end="url(#aG)"/>
+  <line x1="233" y1="372" x2="290" y2="470" stroke="#d62828" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#aR)"/>
+  <line x1="278" y1="410" x2="233" y2="484" stroke="#d62828" stroke-width="1.8" stroke-dasharray="5,4" marker-end="url(#aR)"/>
+  <line x1="233" y1="508" x2="277" y2="508" stroke="#d62828" stroke-width="2.4" marker-start="url(#aRs)" marker-end="url(#aR)"/>
+
+  <text x="36" y="558" font-size="12" fill="#222">remote 35.0~41.4% · migration 3,506~5,146건/s</text>
+  <text x="36" y="578" font-size="12" fill="#222">페이지가 노드 사이를 오감 (node0 메모리 464MB에서 1,127MB로)</text>
+  <text x="36" y="598" font-size="12" fill="#222">page fault 중 NUMA 처리 50.4%</text>
+  <text x="36" y="618" font-size="12" fill="#222">(migrate_misplaced_page 25.7%, 스핀락 11.8%)</text>
+
+  <!-- B: NumaShared -->
+  <rect x="510" y="258" width="470" height="372" rx="8" fill="#ffffff" stroke="#c8ced6"/>
+  <text x="526" y="282" font-size="14" font-weight="700" fill="#222">B. NumaShared (CPU + 메모리 정책)</text>
+  <text x="526" y="302" font-size="11" fill="#555">cpuset 3-5, mems 1: 스레드와 메모리가 node1에만 위치, 경합 파드는 node0으로 분리</text>
+
+  <rect x="530" y="318" width="205" height="214" rx="6" fill="#f4f6f8" stroke="#8a94a0"/>
+  <text x="632" y="338" text-anchor="middle" font-weight="700">NUMA node0 (CPU 0-2)</text>
+  <rect x="755" y="318" width="205" height="214" rx="6" fill="#f4f6f8" stroke="#8a94a0"/>
+  <text x="857" y="338" text-anchor="middle" font-weight="700">NUMA node1 (CPU 3-5)</text>
+
+  <rect x="545" y="352" width="175" height="32" rx="5" fill="#e3e5e8" stroke="#9aa1a9"/>
+  <text x="632" y="372" text-anchor="middle" font-size="11" fill="#555">noisy-neighbor (경합 파드)</text>
+  <rect x="545" y="392" width="175" height="32" rx="5" fill="#e3e5e8" stroke="#9aa1a9"/>
+  <text x="632" y="412" text-anchor="middle" font-size="11" fill="#555">kube-flannel</text>
+  <rect x="545" y="456" width="175" height="62" rx="5" fill="#ffffff" stroke="#9aa1a9" stroke-dasharray="4,3"/>
+  <text x="632" y="480" text-anchor="middle" font-size="11" fill="#777">numa-touch 메모리</text>
+  <text x="632" y="497" text-anchor="middle" font-size="11" fill="#777">4KB (사실상 없음)</text>
+
+  <rect x="770" y="352" width="175" height="72" rx="5" fill="#fde7c7" stroke="#d9822b"/>
+  <text x="857" y="378" text-anchor="middle" font-size="11" font-weight="700">worker x 3</text>
+  <text x="857" y="396" text-anchor="middle" font-size="11">CPU 3, 4, 5에서 실행</text>
+  <text x="857" y="412" text-anchor="middle" font-size="11" fill="#444">전부 node1 안</text>
+  <rect x="770" y="456" width="175" height="62" rx="5" fill="#d8f0ec" stroke="#2a9d8f"/>
+  <text x="857" y="480" text-anchor="middle" font-size="11" font-weight="700">버퍼 1600MB 전량</text>
+  <text x="857" y="497" text-anchor="middle" font-size="11" fill="#444">세 회차 모두 같은 분포</text>
+  <line x1="857" y1="424" x2="857" y2="454" stroke="#2a9d8f" stroke-width="2.4" marker-end="url(#aG)"/>
+
+  <text x="526" y="558" font-size="12" fill="#222">remote 0.3~0.7% · migration 12~18건/s</text>
+  <text x="526" y="578" font-size="12" fill="#222">페이지 이동 없음 (node1에 1,600MB 고정)</text>
+  <text x="526" y="598" font-size="12" fill="#222">page fault 중 NUMA 처리 16.7%</text>
+  <text x="526" y="618" font-size="12" fill="#222">(migration 서브트리 소멸, 남은 것은 local hint fault와 락 경합)</text>
+
+  <!-- 범례 -->
+  <line x1="40" y1="652" x2="80" y2="652" stroke="#2a9d8f" stroke-width="2" marker-end="url(#aG)"/>
+  <text x="88" y="656" font-size="11" fill="#333">local 접근</text>
+  <line x1="190" y1="652" x2="230" y2="652" stroke="#d62828" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#aR)"/>
+  <text x="238" y="656" font-size="11" fill="#333">remote 접근</text>
+  <line x1="350" y1="652" x2="392" y2="652" stroke="#d62828" stroke-width="2.4" marker-start="url(#aRs)" marker-end="url(#aR)"/>
+  <text x="400" y="656" font-size="11" fill="#333">페이지 이동 (migrate_misplaced_page)</text>
+  <text x="960" y="656" text-anchor="end" font-size="11" fill="#777">수치는 2026-11-22 측정 (vmstat 3회, 플레임그래프 1회)</text>
+</svg>

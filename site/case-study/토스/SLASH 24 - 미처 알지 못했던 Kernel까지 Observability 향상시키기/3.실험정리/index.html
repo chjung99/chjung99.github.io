@@ -2456,6 +2456,39 @@
 <li>vmstat 구간 측정을 120초씩 3회 합니다. 회차 사이에 60초를 두고 numastat을 함께 기록합니다.</li>
 <li>ebpf-exporter를 중지하고 page fault 플레임그래프를 120초간 캡처한 뒤 exporter를 다시 켭니다.</li>
 </ol>
+<p>측정 대상 워크로드인 <code>numa-touch</code>(C, <code>pthread</code> 사용)는 다음과 같이 동작합니다. 실행 인자는 총 메모리 크기(MB), 스레드 수, 실행 시간(초)이며, 이번 실험에서는 <code>1600 3 0</code>(1600MB, 스레드 3개, 무한 실행)으로 실행했습니다.</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cm">/* main 스레드: 공유 버퍼 하나를 확보하고 워커 스레드를 만든다 */</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">g_buf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mmap</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">g_bytes</span><span class="p">,</span><span class="w"> </span><span class="n">PROT_READ</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PROT_WRITE</span><span class="p">,</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">             </span><span class="n">MAP_PRIVATE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MAP_ANONYMOUS</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MAP_POPULATE</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nthreads</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="n">worker</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">i</span><span class="p">);</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="cm">/* 워커 스레드: 스레드마다 다른 지점에서 출발해 버퍼 전체를 반복 순회한다 */</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="kt">size_t</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">npages</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="p">)(</span><span class="n">id</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">8</span><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">g_running</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">npages</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">        </span><span class="kt">size_t</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">npages</span><span class="p">;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="n">g_buf</span><span class="p">[</span><span class="n">p</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">PAGE_SIZE</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>실행 흐름은 다음과 같습니다.</p>
+<ol>
+<li><code>main</code> 스레드가 인자를 읽고 <code>mmap</code>으로 버퍼 1600MB를 확보합니다. <code>MAP_POPULATE</code>로 모든 페이지를 미리 채워 두므로, 이후 측정 구간에는 신규 할당에 따른 page fault가 거의 없고 NUMA hint fault가 대부분을 차지합니다.</li>
+<li><code>main</code> 스레드가 <code>pthread_create</code>로 워커 스레드를 3개 만듭니다. 세 스레드는 같은 주소 공간과 같은 버퍼를 공유합니다.</li>
+<li>각 워커가 페이지마다 1바이트씩 증가시키며 버퍼 전체를 끝없이 순회합니다. 출발 지점이 스레드마다 다르지만 순회 방향이 같아서, 시간이 지나면 모든 스레드가 모든 페이지를 접근하게 됩니다.</li>
+<li>실행 시간이 0이면 <code>main</code> 스레드는 대기 없이 <code>pthread_join</code>에서 워커의 종료를 기다립니다. 워커가 종료되지 않으므로 프로세스는 계속 실행되고, CPU와 메모리는 워커 스레드 3개가 사용합니다. 실행 시간이 0보다 크면 그만큼 대기한 뒤 <code>g_running</code>을 내려 워커를 종료시킵니다.</li>
+</ol>
+<p>이렇게 만든 이유는 AutoNUMA가 판단하기 어려운 상황을 만들기 위해서입니다. 스레드가 양쪽 NUMA 노드에 흩어져 있으면 같은 페이지를 서로 다른 노드에서 접근하므로, 커널 입장에서 그 페이지가 있어야 할 올바른 노드가 존재하지 않습니다. 커널 안에서는 다음 순서로 처리됩니다.</p>
+<ol>
+<li>AutoNUMA 스캐너가 페이지의 PTE를 접근 불가(<code>PROT_NONE</code>)로 표시합니다.</li>
+<li>워커가 그 페이지에 접근하면 page fault(NUMA hint fault)가 발생하고 <code>do_numa_page</code>가 호출됩니다.</li>
+<li>접근한 스레드가 페이지와 같은 노드에서 실행 중이면 local로 기록하고 끝납니다.</li>
+<li>다른 노드에서 실행 중이면 remote로 기록하고, 조건이 맞으면 <code>migrate_misplaced_page</code>로 페이지를 그 노드로 옮깁니다.</li>
+<li>다른 노드의 스레드가 다시 접근하면 반대 방향으로 이동이 일어나, 페이지가 노드 사이를 오가게 됩니다.</li>
+</ol>
+<p>반대로 스레드 3개가 모두 한 노드의 CPU에 갇히면 올바른 노드가 하나로 정해지므로 페이지가 한 번 자리를 잡은 뒤에는 더 이동하지 않습니다. 이 워크로드는 배치를 바꾸는 코드를 갖고 있지 않습니다. <code>numa-touch</code>가 스스로 CPU affinity나 메모리 정책을 조작하지 않으므로, 스레드와 메모리가 어느 노드에 놓이는지는 전적으로 kubelet 정책과 스케줄러가 결정합니다. 버퍼에는 동기화를 두지 않았습니다. 여러 스레드가 같은 바이트를 동시에 증가시켜 값이 유실될 수 있지만, 이 프로그램의 목적은 값의 정확성이 아니라 페이지를 접근하는 행위 자체이므로 결과에 영향이 없습니다.</p>
 <p>경합 파드를 함께 둔 이유는 다음과 같습니다. 워킹셋이 NUMA 노드 하나에 들어가고 CPU가 한가하면 기본 스케줄링만으로도 배치가 이미 좋아져 정책이 개선할 여지가 없습니다(초기 실측에서 remote가 거의 없었습니다). 토스의 문제는 노드에 파드가 많고 CPU 압력이 있어 스케줄러가 스레드를 계속 옮기는 상황에서 발생하므로, 경합 파드로 그 압력을 만들었습니다.</p>
 <p>측정 전에 판정 기준을 미리 정했습니다. policy의 remote는 2% 미만, migration은 100/s 미만이어야 하고, 메모리가 한 노드에 집중되어야 하며, <code>numa_pte_updates</code>가 0이 아니어야 합니다.</p>
 <h3 id="_11">비교 대상<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
@@ -2631,6 +2664,7 @@
 <p>플레임그래프는 cycles 기준으로 캡처했습니다. <code>-e page-faults</code>로 재면 폴트 횟수의 비중이 나와 migration의 비싼 비용이 반영되지 않기 때문입니다. 캡처 때는 <code>ebpf_exporter</code>의 kprobe 오버헤드가 비율을 크게 부풀리므로 반드시 중지했습니다. vmstat 지표는 커널 카운터라 exporter의 영향을 받지 않습니다.</p>
 <h2 id="_14">실험 결과<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
 <h3 id="_15">요약<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p><img alt="3.6" src="../3.6.numa-touch-overview.svg" /></p>
 <p><strong>page migration이 기존 대비 약 99.7% 감소했습니다.(3,506~5,146/s -&gt; 12~18/s)</strong></p>
 <p><img alt="3.3" src="../3.3.image.png" /></p>
 <h3 id="_16">정책 적용 확인<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h3>
